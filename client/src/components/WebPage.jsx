@@ -16,9 +16,8 @@ function WebPage(){
                 <h1 className="title">{page.title}</h1>
                 <h3 className="subtitle">Published by <b>{page.author}</b> on {page.publicationDate.format('DD-MM-YYYY')} </h3>
             </header>
-            
             <article>
-                {lContent.map((contentI) => {
+                {page.lContent.map((contentI) => {
                         if(contentI.type === 'header'){
                             return <h2 key={contentI.id}> {contentI.content}</h2>
                         } else if(contentI.type === 'paragraph'){

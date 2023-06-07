@@ -1,16 +1,20 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import WebPage from './components/WebPage';
-
-import { Container } from 'react-bootstrap';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { DefaultLayout, MainLayout } from './components/Layouts';
+import { PageNotFound } from './components/PageNotFound';
 
 function App() {
-
-  return (
-    <Container>
-      <WebPage />
-    </Container>
-  )
+  
+  return <BrowserRouter>
+      <Routes>
+        <Route element={<DefaultLayout />}>
+          <Route index element={<MainLayout />}/>
+          <Route path='*' element={<PageNotFound/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  ;
 
 }
 
-export default App
+export default App 
