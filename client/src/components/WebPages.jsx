@@ -15,12 +15,13 @@ function Blog(){
     ];
 
     return <>
-        <Container className='justify-content-center col-10'>
-        <span> Order By:</span>
-        <span> Title </span>
-        <span> Author </span>
-        <span> Publication Date </span>
-        
+        <Container className='justify-content-center col-10 col-xxl-8 col-xl-8'>
+            <span> Order By:</span>
+        <Container className='tHeader'>
+            <span > Title </span>
+            <span> Author </span>
+            <span> PublicationDate </span>
+        </Container>
         <Table hover align='center'>
             <tbody>
                 {webPages.map((webPage) => {
@@ -38,15 +39,26 @@ function BlogRow(props){
 
     const webPage = props.webPage;
 
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
 
     return <>
         <tr>
             <td className='trRow'>
-            <span> {webPage.author} </span>
-            <span> {webPage.title} </span>
-            <span> {webPage.publicationDate} </span>
-            <Button className='viewButton' onClick={() => { /*navigate(`/page/${webPage.id}`)*/ }}>Read</Button>
+            <div >
+                <span className='trTitle'> {webPage.title} </span>
+                <span className='trInfo'> Published by {webPage.author}, on <b>{webPage.publicationDate}</b></span>
+                <div className='buttonDiv'>
+                    <Button className='viewButton' 
+                            onClick={() => { 
+                                            navigate(`/pages/${webPage.id}`, 
+                                                { state: {'id': webPage.id, 'title': webPage.title, 'author': webPage.author, 'pubDate': webPage.publicationDate, 'creationDate': webPage.creationDate } }
+                                            )
+                                            }
+                                    }> Read </Button>
+                    <Button className='editButton'> EDIT </Button>
+                    <Button className='deleteButton'> DELETE ARTICLE </Button>
+                </div>
+            </div>
             </td>
         </tr>
     </>

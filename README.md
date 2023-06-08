@@ -10,30 +10,45 @@
 - POST `/api/login`
   - request parameters and request body content
   - response body content
-- GET `/api/something`
-  - request parameters
-  - response body content
-- POST `/api/something`
-  - request parameters and request body content
-  - response body content
-- ...
+
+
+- GET `/api/pages`
+  - request parameters: none
+  - response body content: a list of all the pages in the database
+- POST `/api/pages`
+  - request body content: the page just created 
+
+
+- GET `/api/pages/:pageId`
+  - request parameters: none
+  - response body content: a list of all the pages in the database
+- PUT `/api/pages/:pageId`
+  - request body content: the page just created 
+
+
 
 ## Database Tables
 
-- Table `users` - contains xx yy zz
-- Table `something` - contains ww qq ss
-- ...
+- Table `users` - contains all the user Information: userId, name, username, password, salt
+- Table `pages` - contains all the infromation about the page: idPage, title, author, creationDate, publicationDate
+- Table `content` - contains all the content of the page: idContent, idPage, type, content ( text or imageNamePath )
+- Table `images` - contains all the images: idImage, imageNamePath
 
 # Client side
 
 
 ## React Client Application Routes
 
-- Route `/`: page content and purpose
-- Route `/something/:param`: page content and purpose, param specification
-- ...
+- Route `/`: main page with a navbar and a list of pages and it will be displayed in frontOffice view 
+             (logged user will have another button to switch to the Backoffice view)
 
+- Route `/pages/:pageId`: page with the content of the page and it will be displayed in frontOffice view 
+- Route `/newPage`: page with a form to create a new page and it will be displayed in backOffice view
+- Route `/pages/:pageId/edit`: page with a form to edit a page and it will be displayed in backOffice view 
+- Route `/backOffice`: main page with a navbar and a list of pages and it will be displayed in BackOffice view 
 
+- Route `/login`: page with a form to login
+- Route `/*`: everything else that is not one of the previous valid routes will be redirected to a page not found page
 ## Main React Components
 
 - `ListOfSomething` (in `List.js`): component purpose and main functionality

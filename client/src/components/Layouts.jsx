@@ -1,10 +1,10 @@
 import React from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './style.css'
+import './style.css';
 
 import { Outlet, Link } from 'react-router-dom';
-import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap';
-import { Blog } from './WebPages';
+import { Container, Row, Col, Navbar, Button} from 'react-bootstrap';
+import { Blog } from './webpages';
 
 
 function DefaultLayout(){
@@ -15,8 +15,8 @@ function DefaultLayout(){
         </header>
         <main>
         <Container fluid>
-            <Row className="vh-100">
-            <Col style={{marginTop: '5rem'}} >
+            <Row>
+            <Col style={{marginTop: '6rem'}} >
                 <Outlet />
             </Col>
             </Row>
@@ -34,6 +34,9 @@ function MainLayout(){
 
     return <>
         <FrontOffice />
+        <footer className='footerWebPage'>
+            <Button className='backOfficeButton' onClick={() => {}}> BackOfficeView </Button>
+        </footer>
     </>
     ;
 }
@@ -66,6 +69,7 @@ function NavigationBar(){
         <Navbar bg="light" fixed="top" className='personalizedNavbar'>
             <Container fluid>
             <Navbar.Brand>
+                <Button className='editBlogNameButton'> <i className="bi bi-pencil-square"/> </Button>
                 <Link to='/' style={{ color: 'black', textDecoration: 'none' }}>
                     BlogName {/* sara un valore dinamico modificabile */}
                 </Link>
@@ -80,4 +84,4 @@ function NavigationBar(){
     ;
 }
 
-export { DefaultLayout, MainLayout};
+export { DefaultLayout, MainLayout, BackOffice};

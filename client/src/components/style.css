@@ -31,28 +31,97 @@ thead {
     font-weight: 600;
 }
 
+.tHeader{
+    margin-bottom: 1.4rem;
+}
+
+.tHeader span {
+    margin-right: 1.5rem;
+    font-weight: 500;
+}  
+
+.table-hover tbody tr:hover {
+    background-color: rgb(255, 247, 238); /* Colore di sfondo durante l'hover */
+    transition: transparent 0.5s ease; /* Transizione dello sfondo */
+  }
+  
+.table-hover {
+    --bs-table-hover-bg: transparent;
+}
+  
+
+.trRow {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+  
+.trRow > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+  
+.trTitle {
+    font-size: 3.0rem;
+    font-weight: 500;
+}
+
+.trInfo {
+    font-size: 1.0rem;
+    color: grey;
+}
+
+.buttonDiv{
+    margin-top: 1rem;
+    flex-direction: row;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+}
+
 .viewButton {
+    width: 100px;
     color: red;
     border: 1px solid transparent;
     border-radius: 50px;
     background-color: transparent;
+    margin-right: 1rem;
 }
 
-.table-hover tbody tr:hover {
-    background-color: bisque; /* Colore di sfondo durante l'hover */
-    transition: background-color 0.4s ease; /* Transizione dello sfondo */
-  }
-  
-.table tbody tr:hover button {
+.editButton{
+    width: 90px;
+    color: #2edba1;
+    background-color: transparent;
+    border: none;
     border-radius: 50px;
-    background-color: red;
-    color: white;
+    margin-right: 1rem;
 }
 
-.trRow {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+.deleteButton{
+    width: 150px;
+    color: #f63113;
+    background-color: transparent;
+    border-radius: 50px;
+    border: none;
+}
+
+.viewButton:hover{
+    color: white;
+    background-color: #fa7f21;
+    border-color: transparent;
+    transition:  color 0.4s;
+}
+
+.deleteButton:hover{
+    color: white;
+    background-color: #f63113;
+    transition:  color 0.4s;
+}
+
+.editButton:hover{
+    color: white;
+    background-color: #2edba1;
+    transition:  color 0.4s;
 }
 
 .personalizedNavbar {
@@ -72,4 +141,100 @@ thead {
 
 .icon-size {
     font-size: 1.7rem; /* Dimensione desiderata dell'immagine */
+}
+
+.footerWebPage {
+    z-index: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: transparent;
+    margin-top: 5rem;
+}
+  
+.footerButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 40px;
+    background-color: white;
+    color: rgb(240, 106, 106);
+    border: 2px solid orange;
+    border-radius: 20px;
+    margin-right: 1rem;
+}
+  
+.footerButton:hover {
+    border-color: bisque;
+    color: orangered;
+    background-color: bisque;
+    transition: border-color 0.3s, color 0.4s;
+}
+  
+.footerDelete {
+    justify-content: center;
+    align-items: center;
+    
+    width: 150px;
+    background-color: white;
+    color: red;
+    border: 2px solid red;
+    border-radius: 20px;
+    margin-right: 1rem;
+}
+  
+.footerDelete:hover {
+    border-color: red;
+    color: white;
+    background-color: red;
+    transition:  border-color 0.3s, color 0.4s;
+}
+
+.footerEdit {
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    color: cornflowerblue;
+    background-color: white;
+    border: 2px solid  cornflowerblue;
+    border-radius: 20px;
+    margin-right: 1rem;
+}
+  
+.footerEdit:hover {
+    border-color: springgreen;
+    color: white;
+    background-color: springgreen;
+    transition:  border-color 0.3s, color 0.3s;
+}
+
+.editBlogNameButton{
+    align-self: center;
+    color: #2edba1;
+    background-color: whitesmoke;
+    border-color: #2edba1;
+    border-radius: 30px;
+    margin-right: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.editBlogNameButton:hover{
+    border-color: #2edba1;
+    color: white;
+    background-color: #2edba1;
+    transition:  border-color 0.3s, color 0.3s;
+}
+
+.backOfficeButton{
+    
+    width: 150px;
+    background-color: white;
+    color: rgb(240, 106, 106);
+    border: 2px solid orange;
+    border-radius: 20px;
 }
