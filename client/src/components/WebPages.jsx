@@ -55,7 +55,7 @@ function BlogRow(props){
                                             )
                                             }
                                     }> Read </Button>
-                    <Button className='editButton'> EDIT </Button>
+                    <Button className='editButton' onClick={()=>navigate(`/pages/${webPage.id}/edit`)}> EDIT </Button>
                     <Button className='deleteButton'> DELETE ARTICLE </Button>
                 </div>
             </div>

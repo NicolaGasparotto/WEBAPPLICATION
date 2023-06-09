@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './style.css';
 
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Navbar, Button} from 'react-bootstrap';
 import { Blog } from './webpages';
 
@@ -31,11 +31,13 @@ function MainLayout(){
     // main layout will always display frontOffice view 
     // inside front office if the user is logged there is the possiblity to switch to backOffice view with a button
     // inside backOffice view there is the possibility to switch back to frontOffice view with a button
-
+    const navigate = useNavigate();
+    
     return <>
         <FrontOffice />
         <footer className='footerWebPage'>
-            <Button className='backOfficeButton' onClick={() => {}}> BackOfficeView </Button>
+            <Button className='newPageButton' onClick={() => {navigate('/newPage')}}> Create New Page </Button>
+            <Button className='backOfficeButton' onClick={() => {}}> BackOfficeView </Button>            
         </footer>
     </>
     ;

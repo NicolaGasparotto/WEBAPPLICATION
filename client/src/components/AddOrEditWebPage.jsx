@@ -1,9 +1,19 @@
+import WebPageForm from "./WebPageForm";
+
 function AddWebPage(){
-    return ;
+    
+    return<>
+        <WebPageForm handleAdd={''}/>
+    </> 
+    ;
 }
 
 function EditWebPage(){
-    return ;
+    
+    return<>
+        <WebPageForm handleAdd={''}/>
+    </> 
+    ;
 }
 
 export { AddWebPage, EditWebPage };

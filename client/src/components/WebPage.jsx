@@ -56,7 +56,10 @@ function WebPage(){
         </Container>
         <footer className="footerWebPage"> 
                 <Button className='footerButton' onClick={() => {navigate('/')}}> Go Back To Home Page </Button>
-                <Button className='footerEdit' onClick={() => {navigate('/')}}> EDIT Page </Button>
+                <Button className='footerEdit' onClick={() => {navigate(`/pages/${page.id}/edit`, {
+                    state: { 'nextpage': `/pages/${page.id}`,
+                              'id': page.id, 'title': page.title, 'author': page.author, 'pubDate': page.publicationDate.format('DD-MM-YYYY'), 'creationDate': page.creationDate.format('DD-MM-YYYY')
+                    } })}}> EDIT Page </Button>
                 <Button className='footerDelete' onClick={() => {navigate('/')}}> DELETE PAGE </Button>
         </footer>
     </>;

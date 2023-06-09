@@ -160,8 +160,7 @@ thead {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px;
-    height: 40px;
+    width: max-content;
     background-color: white;
     color: rgb(240, 106, 106);
     border: 2px solid orange;
@@ -237,4 +236,28 @@ thead {
     color: rgb(240, 106, 106);
     border: 2px solid orange;
     border-radius: 20px;
+}
+
+.loginButtons{
+    display:flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.loginButton{
+    background-color: white;
+    color: cornflowerblue;
+    border: 2px solid cornflowerblue ;
+    border-radius: 50px;
+    width: 120px  ;
+    margin-right: 1.0rem;
+}
+
+.newPageButton{
+    background-color: white;
+    color: cornflowerblue;
+    border: 2px solid cornflowerblue ;
+    border-radius: 50px;
+    width: max-content;
+    margin-right: 1.0rem;
 }
