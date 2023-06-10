@@ -16,5 +16,7 @@ app.get('/guess', (req, res) => {
     res.send(String(n)) ;
 }) ;
 
+app.use('/static', express.static('public'));
+
 app.listen(PORT,
     () => { console.log(`Server started on http://localhost:${PORT}/`) });

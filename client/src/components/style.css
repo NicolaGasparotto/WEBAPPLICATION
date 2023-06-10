@@ -49,22 +49,10 @@ thead {
     --bs-table-hover-bg: transparent;
 }
   
-
-.trRow {
-    display: flex;
-    justify-content: center;
-    margin-top: 1.5rem;
-}
-  
-.trRow > div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-  
+ 
 .trTitle {
-    font-size: 3.0rem;
-    font-weight: 500;
+    font-size: 2.7rem;
+    font-weight: 700;
 }
 
 .trInfo {
@@ -276,4 +264,31 @@ thead {
     background-color: cornflowerblue;
     color: white;
     border: 2px solid cornflowerblue ;
+}
+
+.addElementsDiv {
+    grid-row: 2;
+    position: relative;
+    margin-left: 12rem;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    align-items: flex-start;
+}
+
+.addElementsButton{
+    margin-bottom: 1.0rem;
+    background-color: whitesmoke;
+    color: cornflowerblue;
+    font-weight: 500;
+    border: none;
+    border-radius: 50px;
+    width: max-content;
+}
+
+.addElementsButton:hover{
+    background-color: cornflowerblue;
+    color: white;
+    transition:  background-color 0.3s, color 0.3s;
 }
