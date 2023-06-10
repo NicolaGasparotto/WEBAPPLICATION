@@ -11,15 +11,15 @@
     margin: 10;
 }
 
-h2{
-    font: Lora;
+.heading2{
+    font-style: Lora;
     font-size: 2.5rem;
     font-weight: 500;
     margin: 10;
 }
 
 p {
-    font: Lora;
+    font-style: Lora;
     font-size: 1.2rem;
 }
 
@@ -144,7 +144,6 @@ thead {
 }
 
 .footerWebPage {
-    z-index: 0;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -154,6 +153,7 @@ thead {
     padding: 20px;
     background-color: transparent;
     margin-top: 5rem;
+    margin-bottom: 1rem;
 }
   
 .footerButton {
@@ -179,12 +179,12 @@ thead {
     justify-content: center;
     align-items: center;
     
-    width: 150px;
+    width: max-content;
     background-color: white;
     color: red;
     border: 2px solid red;
     border-radius: 20px;
-    margin-right: 1rem;
+    
 }
   
 .footerDelete:hover {
@@ -260,4 +260,20 @@ thead {
     border-radius: 50px;
     width: max-content;
     margin-right: 1.0rem;
+}
+
+.upDownButtons{
+  background-color: white;
+  color: cornflowerblue;
+  border: 2px solid cornflowerblue;
+  border-radius: 20px;
+  align-items: center;
+  transform: scale(0.8);
+  margin-bottom: -0.5rem;
+}
+
+.upDownButtons:hover{
+    background-color: cornflowerblue;
+    color: white;
+    border: 2px solid cornflowerblue ;
 }

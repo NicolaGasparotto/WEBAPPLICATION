@@ -55,6 +55,7 @@ function Login(props) {
               value={password} placeholder="Enter the password."
               onChange={(ev) => setPassword(ev.target.value)}
               required={true} minLength={6}
+              autoComplete='current password'
             />
           </Form.Group>
           <div className='loginButtons'>
@@ -68,17 +69,4 @@ function Login(props) {
   )
 };
 
-function LogoutButton(props) {
-  return (
-    <Button variant="outline-light" onClick={props.logout}>Logout</Button>
-  )
-}
-
-function LoginButton(props) {
-  const navigate = useNavigate();
-  return (
-    <Button variant="outline-light" onClick={()=> navigate('/login')}>Login</Button>
-  )
-}
-
-export { Login, LogoutButton, LoginButton };
+export { Login };
