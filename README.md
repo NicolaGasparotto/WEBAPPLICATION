@@ -39,13 +39,14 @@
 
 ## React Client Application Routes
 
-- Route `/`: main page with a navbar and a list of pages and it will be displayed in frontOffice view 
-             (logged user will have another button to switch to the Backoffice view)
+- Route `/`: main page with a navbar and a list of pages and it will be displayed in frontOffice view by Default.
+
+             logged user will have another button to switch to the Backoffice view or back to FrontOffice view.
+             ( this means that there is no need to have the different pages for the two views that share already a lot of components )
 
 - Route `/pages/:pageId`: page with the content of the page and it will be displayed in frontOffice view 
 - Route `/newPage`: page with a form to create a new page and it will be displayed in backOffice view
 - Route `/pages/:pageId/edit`: page with a form to edit a page and it will be displayed in backOffice view 
-- Route `/backOffice`: main page with a navbar and a list of pages and it will be displayed in BackOffice view 
 
 - Route `/login`: page with a form to login
 - Route `/*`: everything else that is not one of the previous valid routes will be redirected to a page not found page

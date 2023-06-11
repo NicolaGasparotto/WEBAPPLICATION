@@ -62,7 +62,7 @@ function BlogRow(props){
                                             )
                                             }
                                     }> Read </Button>
-                    { (user.id) ? <>
+                    { (user.backOfficeView && (user.name === webPage.author || user.admin)) ? <>
                         <Button className='editButton' onClick={()=>navigate(`/pages/${webPage.id}/edit`)}> EDIT </Button>
                         <Button className='deleteButton'> DELETE ARTICLE </Button>
                     </> : <></>}

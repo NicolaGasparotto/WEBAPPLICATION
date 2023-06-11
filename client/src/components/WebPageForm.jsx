@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "./UserContext";
 import { useContext } from "react";
 
-import { Modal, Row, Col, Image } from "react-bootstrap";
+import { Modal, Row, Col, Image, Figure, Alert, FloatingLabel } from "react-bootstrap";
 
 function WebPageForm(props) {
   /*
@@ -31,9 +31,10 @@ function WebPageForm(props) {
       : dayjs().format("YYYY-MM-DD")
   );
 
+  const [showImageError, setShowImageError] = useState(false);
+
   const [newHeader, setNewHeader] = useState("");
   const [newParagraph, setNewParagraph] = useState("");
-  const [newImage, setNewImage] = useState("");
 
   const [imageList, setImageList] = useState([
     { id: 1, filename: "giraffe_01.png", name: "Image 1" },
@@ -88,7 +89,35 @@ function WebPageForm(props) {
     },
   ]);
 
-  const handleSubmit = (event) => {};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  
+    const hasHeader = lContent.some((item) => item.type === "header");
+    const hasImageOrParagraph = lContent.some(
+      (item) => item.type === "image" || item.type === "paragraph"
+    );
+  
+    if (hasHeader && hasImageOrParagraph) {
+      // Update the values in lContent  
+      setLContent(lContent);
+  
+      // Navigate back to the previous page
+      const page = location.state;
+      if (page) {
+        navigate(location.state.nextpage, {
+          state: {
+            id: page.id,
+            title: page.title,
+            author: page.author,
+            pubDate: page.publicationDate,
+            creationDate: page.creationDate,
+          },
+        });
+      } else {
+        navigate("/");
+      }
+    }
+  };  
 
   const handleDelete = (id) => {
     const updatedLContent = lContent.filter((item) => item.id !== id);
@@ -138,27 +167,32 @@ function WebPageForm(props) {
   };
 
   const handleAddImage = () => {
-    const newId = Math.max(...lContent.map((item) => item.id)) + 1;
-    const selectedImage = imageList.find((image) =>
-      selectedImages.includes(image.id)
-    );
+    if (selectedImages.length === 0) {
+      setShowImageError(true);
+      return;
+    }
 
-    if (selectedImage) {
+    let newId = Math.max(...lContent.map((item) => item.id));
+    for (const selectedImage of selectedImages) {
+      newId += 1;
       const newImageItem = {
         id: newId,
         type: "image",
-        content: selectedImage.url,
+        content: selectedImage.filename,
       };
       setLContent((prevContent) => [...prevContent, newImageItem]);
-      setNewImage("");
+
+      setShowImageError(false);
       setShowImageModal(false);
       setSelectedImages([]);
-      console.log("selectedImages", selectedImages);
-      console.log(lContent);
     }
   };
 
-  let t = " ";
+  const handleModalClose = () => {
+    setShowImageModal(false);
+    setShowImageError(false);
+    setSelectedImages([]);
+  };
 
   return (
     <>
@@ -213,23 +247,24 @@ function WebPageForm(props) {
           </Form.Group>
 
           {lContent.map((item) => {
-
             return (
               <>
                 <Form.Group key={item.id} className="mb-4">
-                  <Form.Label>
-                    <b>{item.type}:</b>
-                  </Form.Label>
-
                   <div className="d-flex align-items-center">
-                    <ContentForm item={item} />
+                    {/* <!-- It could be a TextArea or An Image -->*/}
+                    <ContentForm
+                      item={item}
+                      lContent={lContent}
+                      setLContent={setLContent}
+                    />
+
                     <Button
                       className="footerDelete me-2"
                       onClick={() => handleDelete(item.id)}
                     >
                       <i className="bi bi-trash"></i>
                     </Button>
-                    <div>
+                    <div style={{display: "flex", flexDirection: 'column'}}>
                       <Button
                         className="upDownButtons"
                         onClick={() => handleMove(item.id, "up")}
@@ -275,63 +310,77 @@ function WebPageForm(props) {
         </Button>
       </div>
 
-      <Modal show={showImageModal} onHide={() => setShowImageModal(false)}>
+      <Modal size="lg" show={showImageModal} onHide={() => handleModalClose()}>
         <Modal.Header closeButton>
-          <Modal.Title>Select Images</Modal.Title>
+          <Modal.Title>Select Image:</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Row>
+        <Modal.Body style={{ paddingLeft: "40px", paddingRight: "20px" }}>
+          <Row className="gx-5">
             {/* Loop per visualizzare le immagini */}
-            {imageList.map((image) => (
-              <Col key={image.id} xs={6} md={4} lg={3}>
-                <div className="image-wrapper">
-                  <img
-                    src={
-                      /*`${process.env.PUBLIC_URL}/images/${image.filename}`*/ image.url
-                    }
-                    alt={image.name}
-                  />
-                  <div className="image-overlay">
-                    <Form.Check
-                      type="checkbox"
-                      checked={selectedImages.includes(image.id)}
-                      onChange={(event) => {
-                        const isChecked = event.target.checked;
-                        if (isChecked) {
-                          setSelectedImages((prevImages) => [
-                            ...prevImages,
-                            image.id,
-                          ]);
-                        } else {
-                          setSelectedImages((prevImages) =>
-                            prevImages.filter((id) => id !== image.id)
-                          );
+            {imageList.map((image) => {
+              return (
+                <Col key={image.id} xs={6} xl={3} lg={3} className="mt-4">
+                  <div className="image-wrapper">
+                    <Figure className="figureBlock">
+                      <Figure.Image
+                        width={171}
+                        height={180}
+                        src={
+                          "http://localhost:3000/static/images/" +
+                          image.filename
                         }
-                      }}
-                    />
+                        alt={image.name}
+                      />
+                    </Figure>
+                    <div className="checkBoxWrapper">
+                      <Form.Check
+                        type="checkbox"
+                        checked={selectedImages.includes(image)}
+                        label={image.name}
+                        onChange={(event) => {
+                          const isChecked = event.target.checked;
+                          if (isChecked) {
+                            setSelectedImages((prevImages) => [
+                              ...prevImages,
+                              image,
+                            ]);
+                          } else {
+                            // is already checked --> remove it
+                            setSelectedImages((prevImages) =>
+                              prevImages.filter((img) => img.id !== image.id)
+                            );
+                          }
+                        }}
+                      />{" "}
+                    </div>
                   </div>
-                </div>
-              </Col>
-            ))}
+                </Col>
+              );
+            })}
           </Row>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowImageModal(false)}>
+          {showImageError && (
+            <Alert variant="danger" style={{ marginRight: "5%" }}>
+              Please select an image.
+            </Alert>
+          )}
+          <Button variant="secondary" onClick={() => handleModalClose()}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleAddImage}>
+          <Button variant="primary" onClick={() => handleAddImage()}>
             Add
           </Button>
         </Modal.Footer>
       </Modal>
 
       <footer className="footerWebPage" style={{ gridRow: "3" }}>
-        <Button className="deleteButton" variant="primary" type="submit">
+        <Button className="newPageButton" style={{width: '150px'}}  onClick={(event) => handleSubmit(event)} type="submit">
           Save
         </Button>
         <Button
           className="deleteButton"
-          variant="danger"
+          style={{ border: "2px solid red" }}
           onClick={() => {
             const page = location.state;
             if (page) {
@@ -356,35 +405,54 @@ function WebPageForm(props) {
 
 function ContentForm(props) {
   const item = props.item;
-  console.log(item);
+
   let t = "";
 
   if (item.type === "header") {
-    t = "heading2 flex-grow-1 me-3";
+    t = "heading2 flex-grow-1 me-3 ";
   } else if (item.type === "image") {
     return (
-      <div key={item.id} className="d-flex align-contents-center col-9 me-4">
-        <Image src={'http://localhost:3000/static/images/' + item.content} alt="Image" />
-        {/* Aggiungi pulsanti per eliminare, spostare, ecc. */}
-      </div>
+      <>
+        <div>
+          <Form.Label>
+            <b>{item.type}:</b>
+          </Form.Label>
+          <div key={item.id} className="flex-grow-1 me-3">
+            <Image
+              src={"http://localhost:3000/static/images/" + item.content}
+              alt="Image"
+              fluid
+            />
+          </div>
+        </div>
+      </>
     );
   } else {
     t = "flex-grow-1 me-3";
   }
 
   return (
-    <Form.Control
-      as="textarea"
-      rows={4}
-      className={t}
-      value={item.content}
-      onChange={(event) => {
-        const updatedLContent = lContent.map((el) =>
-          el.id === item.id ? { ...el, content: event.target.value } : el
-        );
-        setLContent(updatedLContent);
-      }}
-    />
+    <>
+      <FloatingLabel
+        controlId="textarea"
+        label={item.type + ":"}
+        style={{ fontWeight: "500"}}
+        className="flex-grow-1 me-3"
+      >
+      <Form.Control
+        as="textarea"
+        className={t}
+        style={{ height: "250px", paddingTop: '35px' }}
+        value={item.content}
+        onChange={(event) => {
+          const updatedLContent = props.lContent.map((el) =>
+            el.id === item.id ? { ...el, content: event.target.value } : el
+          );
+          props.setLContent(updatedLContent);
+        }}
+      />
+      </FloatingLabel>
+    </>
   );
 }
 

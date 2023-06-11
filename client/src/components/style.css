@@ -113,8 +113,9 @@ thead {
 }
 
 .personalizedNavbar {
-    padding-left: 8rem;
-    padding-right: 8rem;
+    padding-left: 6%;
+    padding-right: 6%;
+    height: 65px;
 }
 
 .personalizedNavbar::after{
@@ -194,9 +195,9 @@ thead {
 }
   
 .footerEdit:hover {
-    border-color: springgreen;
+    border-color: #2edba1;
     color: white;
-    background-color: springgreen;
+    background-color: #2edba1;
     transition:  border-color 0.3s, color 0.3s;
 }
 
@@ -218,10 +219,16 @@ thead {
 }
 
 .backOfficeButton{
-    
     width: 150px;
     background-color: white;
     color: rgb(240, 106, 106);
+    border: 2px solid orange;
+    border-radius: 20px;
+}
+
+.backOfficeButton:hover{
+    background-color: orange;
+    color: white;
     border: 2px solid orange;
     border-radius: 20px;
 }
@@ -268,8 +275,7 @@ thead {
 
 .addElementsDiv {
     grid-row: 2;
-    position: relative;
-    margin-left: 12rem;
+    margin-left: 13%;
     grid-row: 2;
     display: flex;
     flex-direction: column;
@@ -292,3 +298,77 @@ thead {
     color: white;
     transition:  background-color 0.3s, color 0.3s;
 }
+
+.image-wrapper {
+    height: 100%; /* Imposta l'altezza del div image-wrapper al 100% del contenitore genitore */
+    display: flex;
+    flex-direction: column;
+}
+
+.figureBlock {
+    flex: 1; /* Il componente Figure occupa tutto lo spazio rimanente all'interno del div image-wrapper */
+    margin-bottom: 5px; /* Margine inferiore per separare il div checkboxWrapper */
+    margin-right: 1rem;
+}
+  
+.checkBoxWrapper {    
+    bottom: 0;
+}  
+
+.modal-header {
+    background-color: whitesmoke;
+}
+
+.modal-header > button{
+    background-color: #f63113;
+    
+}
+
+.modal-footer {
+    background-color: whitesmoke;
+}
+
+.saveButtonNav{
+    background-color: white;
+    color: cornflowerblue;
+    border: 2px solid cornflowerblue;
+    border-radius: 50px;
+    margin-right: 0.5rem;
+    margin-left: 10%;
+}
+
+.saveButtonNav:hover{
+    background-color: cornflowerblue;
+    color: white;
+    border: 2px solid cornflowerblue;
+}
+
+.cancelButtonNav{
+    background-color: white;
+    color: red;
+    border: 2px solid red;
+    border-radius: 50px;
+    width: 35%;
+}
+
+.cancelButtonNav:hover{
+    background-color: red;
+    color: white;
+    border: 2px solid red;
+}
+
+.logoutButton{
+    background-color: white;
+    color: red;
+    border: 2px solid red;
+    border-radius: 35px;
+    transform: scale(0.7);
+    margin-top: 1%;
+}
+
+.logoutButton:hover{
+    background-color: red;
+    color: white;
+    border: 2px solid red;
+}
+
