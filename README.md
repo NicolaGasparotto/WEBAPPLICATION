@@ -29,10 +29,10 @@
 
 ## Database Tables
 
-- Table `users` - contains all the user Information: userId, name, username, password, salt
-- Table `pages` - contains all the infromation about the page: idPage, title, author, creationDate, publicationDate
-- Table `content` - contains all the content of the page: idContent, idPage, type, content ( text or imageNamePath )
-- Table `images` - contains all the images: idImage, imageNamePath
+- Table `users` - contains all the user Information: `userId, name (must be an Unique value not already present in the table), username, password, salt, admin`
+- Table `pages` - contains all the infromation about the page: `idPage, title, author, creationDate, publicationDate`
+- Table `contens` - contains all the content of the page: `idContent, idPage, type, content ( text or imageNamePath )`
+
 
 # Client side
 

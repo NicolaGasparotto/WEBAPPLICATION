@@ -1,21 +1,37 @@
-import React from 'react';
+
 import { Table, Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserContext } from './UserContext';
 
+import { pageList } from '../API';
+
+import dayjs from 'dayjs';
 import './style.css';
 
 function Blog(){
 
-    const webPages = [
-        {'id': 1, 'author': 'Author1', 'title': 'Title1 ', 'publicationDate': '2021-01-01'},
-        {'id': 2, 'author': 'Author2', 'title': 'Title2 ', 'publicationDate': '2021-01-02'},
-        {'id': 3, 'author': 'Author3', 'title': 'Title3 ', 'publicationDate': '2021-01-03'},
-        {'id': 4, 'author': 'Author4', 'title': 'Title4 ', 'publicationDate': '2021-01-04'},
-        {'id': 5, 'author': 'Author5', 'title': 'Title5', 'publicationDate': '2021-01-05'},
-    ];
+    const user = useContext(UserContext);
+
+    const [ webPages, setWebPages ] = useState([]); 
+
+    useEffect(() => {
+        pageList().then((list) => {
+            setWebPages(list);
+        });
+      }, []);
+
+    // to be implemented delete article 
+    // to be implemented edit article passthrough
+    const isValid = (date) => {
+        if(date === null)
+            return 0;
+        else if(dayjs(date).isAfter(dayjs()))
+            return -1;
+        else
+            return 1;
+    }
 
     return <>
         <Container className='justify-content-center col-10 col-xxl-6 col-xl-7'>
@@ -28,7 +44,10 @@ function Blog(){
         <Table hover>
             <tbody>
                 {webPages.map((webPage) => {
-                        return <BlogRow key={webPage.id} webPage={webPage} />
+                        if(user.id || isValid(webPage.publicationDate) > 0)
+                            return <BlogRow key={webPage.idPage} webPage={webPage} isValid={isValid(webPage.publicationDate)}/>;
+                        else
+                            return <></>;
                     }
                 )}
             </tbody>
@@ -46,24 +65,35 @@ function BlogRow(props){
 
     const navigate = useNavigate();
 
+        const pubDate = () => {
+            if(props.isValid > 0)
+                return <b>{dayjs(webPage.publicationDate).format('DD-MM-YYYY')}</b>;
+            else if(props.isValid === 0)
+                return <span style={{color: "red", fontWeight: "500"}}>DRAFT</span>;
+            else 
+                return <span style={{color: "cornflowerblue", fontWeight: "500"}}> {dayjs(webPage.publicationDate).format('DD-MM-YYYY')} (not yet published)</span>;
+        }
+
     return <>
         <tr className='mt-5'>
             <td className='row gx-4 gx-lg-5 justify-content-center mt-3'>
             <div className='col-md-10 col-lg-8' >
                 <div>
                     <div><span className='trTitle'> {webPage.title} </span></div>
-                <span className='trInfo'> Published by {webPage.author}, on <b>{webPage.publicationDate}</b></span>
+                <span className='trInfo'> Published by {webPage.author}, on {pubDate()}</span>
                 </div>
                 <div className='buttonDiv'>
                     <Button className='viewButton' 
                             onClick={() => { 
-                                            navigate(`/pages/${webPage.id}`, 
-                                                { state: {'id': webPage.id, 'title': webPage.title, 'author': webPage.author, 'pubDate': webPage.publicationDate, 'creationDate': webPage.creationDate } }
+                                            navigate(`/pages/${webPage.idPage}`, 
+                                                { state: {'idPage': webPage.idPage, 'title': webPage.title, 'author': webPage.author, 'publicationDate': webPage.publicationDate, 'creationDate': webPage.creationDate } }
                                             )
                                             }
                                     }> Read </Button>
                     { (user.backOfficeView && (user.name === webPage.author || user.admin)) ? <>
-                        <Button className='editButton' onClick={()=>navigate(`/pages/${webPage.id}/edit`)}> EDIT </Button>
+                        <Button className='editButton' onClick={()=>navigate(`/pages/${webPage.idPage}/edit`,
+                                                                            { state: {'idPage': webPage.idPage, 'title': webPage.title, 'author': webPage.author, 'publicationDate': webPage.publicationDate, 'creationDate': webPage.creationDate } } 
+                        )}> EDIT </Button>
                         <Button className='deleteButton'> DELETE ARTICLE </Button>
                     </> : <></>}
                 </div>

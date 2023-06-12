@@ -1,0 +1,77 @@
+GET http://localhost:3000/api/pages
+###
+
+GET http://localhost:3000/api/contents/7
+###
+
+### ADD A NEW PAGE
+POST http://localhost:3000/api/pages
+Content-Type: application/json
+
+{
+    "title": "New Page 7",
+    "author": "John Doe",
+    "publicationDate": null,
+    "creationDate": "2023-06-08",
+    "lContents": [
+    {
+      "idContent": "1",
+      "type": "header",
+      "content": "New header 1"
+    },
+    {
+      "idContent": "2",
+      "type": "paragraph",
+      "content": "New paragraph 2"
+    },
+    {
+      "idContent": "3",
+      "type": "paragraph",
+      "content": "New paragraph 3"
+    }
+  ]
+}
+###
+
+GET http://localhost:3000/api/pages
+###
+
+GET http://localhost:3000/api/contents/7
+###
+
+DELETE http://localhost:3000/api/pages/7
+###
+
+### EDIT A PAGE
+PUT http://localhost:3000/api/pages/7
+Content-Type: application/json
+
+{
+  "title": "Updated Page Title",
+  "author": "John Doe",
+  "publicationDate": "2023-06-10",
+  "creationDate": "2023-06-08",
+  "lContents": [
+    {
+      "idContent": "2",
+      "type": "header",
+      "content": "Updated content 1"
+    },
+    {
+      "idContent": "3",
+      "type": "paragraph",
+      "content": "Updated content 2"
+    }
+  ]
+}
+
+### GET blogname
+GET http://localhost:3000/api/blogname
+
+### PUT blogname
+PUT http://localhost:3000/api/blogname
+Content-Type: application/json
+
+{
+  "name": "My Blog"
+}

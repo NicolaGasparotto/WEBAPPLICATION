@@ -1,22 +1,100 @@
-'use strict';
+"use strict";
 
 const PORT = 3000;
 
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors');
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
 
+const dao = require("./dao"); // module for accessing the DB
+
+function delay(req, res, next) {
+  setTimeout(() => {
+    next();
+  }, 1500);
+}
+
+// init express
 const app = express();
-app.use(morgan('combined'));
+
+app.use(morgan("dev"));
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:5173",
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
-app.get('/guess', (req, res) => {
-    const n = Math.floor(Math.random()*100) ;
-    res.send(String(n)) ;
-}) ;
+//app.use(delay); // to test loading. REMOVE IT!
 
-app.use('/static', express.static('public'));
+// to send static files (images in this case)
+app.use("/static", express.static("public"));
 
-app.listen(PORT,
-    () => { console.log(`Server started on http://localhost:${PORT}/`) });
+/*** APIs ***/
+// GET all page web
+app.get("/api/pages", (req, res) => {
+  dao
+    .getPagesList()
+    .then((pages) => res.json(pages))
+    .catch((error) => res.status(500).send(error));
+});
+
+// GET content list based on pageId
+app.get("/api/contents/:pageId", (req, res) => {
+  const pageId = req.params.pageId;
+  dao
+    .getPageContents(pageId)
+    .then((contents) => res.json(contents))
+    .catch((error) => res.status(500).send(error));
+});
+
+// DELETE page and its contents based on pageId
+app.delete("/api/pages/:pageId", (req, res) => {
+  const pageId = req.params.pageId;
+  dao
+    .deletePage(pageId)
+    .then((value) => res.json(value))
+    .catch((error) => res.status(500).send(error));
+});
+
+// PUT update page and its contents based on pageId
+app.put("/api/pages/:pageId", (req, res) => {
+  const pageId = req.params.pageId;
+  const { lContents: contents, ...page } = req.body;
+  
+  dao
+    .updatePageContents(pageId, page, contents)
+    .then((contents) => res.json(contents))
+    .catch((error) => res.status(500).send(error));
+});
+
+app.post("/api/pages", (req, res) => {
+  const { contents, ...page } = req.body;
+
+  dao
+    .addNewPage(page, contents)
+    .then((values) => res.json(values))
+    .catch((error) => res.status(500).send(error));
+});
+
+// GET blogname
+app.get("/api/blogname", (req, res) => {
+  dao
+    .getBlogName()
+    .then((name) => res.json(name))
+    .catch((error) => res.status(500).send(error));
+});
+
+// PUT blogname
+app.put("/api/blogname", (req, res) => {
+  const newName = req.body.name;
+  dao
+    .updateBlogName(newName)
+    .then(() => res.sendStatus(200))
+    .catch((error) => res.status(500).send(error));
+});
+
+/** SERVER ACTIVATION: */
+app.listen(PORT, () => {
+  console.log(`Server started on http://localhost:${PORT}/`);
+});

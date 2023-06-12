@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button, Container, FormLabel } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -9,25 +9,35 @@ import { useContext } from "react";
 
 import { Modal, Row, Col, Image, Figure, Alert, FloatingLabel } from "react-bootstrap";
 
+import { getContents} from "../API";
+
 function WebPageForm(props) {
-  /*
-   * Creating a state for each parameter of the webpage.
-   * There are two possible cases:
-   * - if we are creating a new webpage, the form is initialized with the default values.
-   * - if we are editing a webpage, the form is pre-filled with the previous values.
-   */
+
+  const user = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = useContext(UserContext);
+  /* Retrieving the information */
+  let webPage = undefined;
+  if(location.state){
+    webPage = {...location.state};
+  }
 
-  const webPage = props.webPage;
+  const [ lContent, setLContent ] = useState([]);
+  useEffect(() => {
+    if (webPage) {
+      getContents(webPage.idPage).then((list) => {
+        setLContent(list) ;
+      });
+    }
+  }, []);
 
+  /* Setting values for the form page*/
   const [title, setTitle] = useState(webPage ? webPage.title : " ");
-  const [author, setAuthor] = useState(webPage ? webPage.author : " paolo");
+  const [author, setAuthor] = useState(webPage ? webPage.author : " ");
   const [publicationDate, setPublicationDate] = useState(
     webPage && webPage.publicationDate
-      ? webPage.publicationDate.format("YYYY-MM-DD")
+      ? dayjs(webPage.publicationDate).format("YYYY-MM-DD")
       : dayjs().format("YYYY-MM-DD")
   );
 
@@ -46,49 +56,22 @@ function WebPageForm(props) {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
 
-  const [lContent, setLContent] = useState([
-    { id: 1, type: "header", content: "Title1" },
-    {
-      id: 2,
-      type: "paragraph",
-      content:
-        "This is some text in paragraph1. not tooo short because is not possible to see the centrature",
-    },
-    {
-      id: 3,
-      type: "paragraph",
-      content:
-        "This is some text in paragraph1. not tooo short because is not possible to see the centrature \naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ",
-    },
-    {
-      id: 4,
-      type: "paragraph",
-      content:
-        "This is some text in paragraph1. not tooo short because is not possible to see the centrature",
-    },
-    { id: 8, type: "header", content: "Title1" },
-    {
-      id: 5,
-      type: "paragraph",
-      content:
-        "This is some text in paragraph1. not tooo short because is not possible to see the centrature",
-    },
-    {
-      id: 6,
-      type: "paragraph",
-      content:
-        "This is some text in paragraph1. not tooo short because is not possible to see the centrature",
-    },
-    { id: 9, type: "header", content: "Title1" },
+  function goBackNavigation() {
+    const page = location.state;
+    if (page && page.nextpage) {
+      navigate(page.nextpage, {
+        state: {
+          idPage: page.idPage,
+          title: page.title,
+          author: page.author,
+          publicationDate: page.publicationDate,
+          creationDate: page.creationDate,
+        },
+      });
+    } else navigate("/");
+  }
 
-    {
-      id: 7,
-      type: "paragraph",
-      content:
-        "This is some text in paragraph1. not tooo short because is not possible to see the centrature",
-    },
-  ]);
-
+  /* The action is different if is an AddNewPage or EditPage*/
   const handleSubmit = (event) => {
     event.preventDefault();
   
@@ -98,36 +81,26 @@ function WebPageForm(props) {
     );
   
     if (hasHeader && hasImageOrParagraph) {
-      // Update the values in lContent  
-      setLContent(lContent);
-  
+      
+      // Update the values in the server
+      // is different if is an AddNewPage or EditPage
+      props.submitUpdates({"idPage": webPage.idPage,"title": title, "author": author, "publicationDate": publicationDate, "creationDate": webPage.creationDate, "lContents": lContent});
+
       // Navigate back to the previous page
-      const page = location.state;
-      if (page) {
-        navigate(location.state.nextpage, {
-          state: {
-            id: page.id,
-            title: page.title,
-            author: page.author,
-            pubDate: page.publicationDate,
-            creationDate: page.creationDate,
-          },
-        });
-      } else {
-        navigate("/");
-      }
+      goBackNavigation();
     }
   };  
 
   const handleDelete = (id) => {
-    const updatedLContent = lContent.filter((item) => item.id !== id);
+    const updatedLContent = lContent.filter((item) => item.idContent !== id);
     setLContent(updatedLContent);
   };
 
   const handleAddHeader = () => {
-    const newId = Math.max(...lContent.map((item) => item.id)) + 1;
+    const newId = lContent.length ? (Math.max(...lContent.map((item) => item.idContent)) + 1) : 1;
+
     const newHeaderItem = {
-      id: newId,
+      idContent: newId,
       type: "header",
       content: newHeader,
     };
@@ -136,9 +109,10 @@ function WebPageForm(props) {
   };
 
   const handleAddParagraph = () => {
-    const newId = Math.max(...lContent.map((item) => item.id)) + 1;
+    const newId = lContent.length ? (Math.max(...lContent.map((item) => item.idContent)) + 1) : 1;
+    
     const newParagraphItem = {
-      id: newId,
+      idContent: newId,
       type: "paragraph",
       content: newParagraph,
     };
@@ -146,8 +120,37 @@ function WebPageForm(props) {
     setNewParagraph("");
   };
 
+  const handleAddImage = () => {
+    if (selectedImages.length === 0) {
+      setShowImageError(true);
+      return;
+    }
+
+    let newId = lContent.length ? (Math.max(...lContent.map((item) => item.idContent))) : 0;
+    for (const selectedImage of selectedImages) {
+      newId += 1;
+      const newImageItem = {
+        idContent: newId,
+        idPage: webPage.idPage,
+        type: "image",
+        content: selectedImage.filename,
+      };
+      setLContent((prevContent) => [...prevContent, newImageItem]);
+
+      setShowImageError(false);
+      setShowImageModal(false);
+      setSelectedImages([]);
+    }
+  };
+
+  const handleModalClose = () => {
+    setShowImageModal(false);
+    setShowImageError(false);
+    setSelectedImages([]);
+  };
+
   const handleMove = (itemId, direction) => {
-    const itemIndex = lContent.findIndex((el) => el.id === itemId);
+    const itemIndex = lContent.findIndex((el) => el.idContent === itemId);
 
     if (direction === "up" && itemIndex > 0) {
       // element up
@@ -164,34 +167,6 @@ function WebPageForm(props) {
       updatedLContent[itemIndex] = temp;
       setLContent(updatedLContent);
     }
-  };
-
-  const handleAddImage = () => {
-    if (selectedImages.length === 0) {
-      setShowImageError(true);
-      return;
-    }
-
-    let newId = Math.max(...lContent.map((item) => item.id));
-    for (const selectedImage of selectedImages) {
-      newId += 1;
-      const newImageItem = {
-        id: newId,
-        type: "image",
-        content: selectedImage.filename,
-      };
-      setLContent((prevContent) => [...prevContent, newImageItem]);
-
-      setShowImageError(false);
-      setShowImageModal(false);
-      setSelectedImages([]);
-    }
-  };
-
-  const handleModalClose = () => {
-    setShowImageModal(false);
-    setShowImageError(false);
-    setSelectedImages([]);
   };
 
   return (
@@ -239,7 +214,7 @@ function WebPageForm(props) {
               onChange={(event) => {
                 event.target.value
                   ? setPublicationDate(
-                      dayjs(event.target.value).format("YYYY-MM-DD")
+                      (event.target.value)
                     )
                   : setPublicationDate("");
               }}
@@ -248,9 +223,8 @@ function WebPageForm(props) {
 
           {lContent.map((item) => {
             return (
-              <>
-                <Form.Group key={item.id} className="mb-4">
-                  <div className="d-flex align-items-center">
+                <Form.Group key={item.idContent} className="mb-4">
+                  <div className="d-flex align-items-center" >
                     {/* <!-- It could be a TextArea or An Image -->*/}
                     <ContentForm
                       item={item}
@@ -260,27 +234,26 @@ function WebPageForm(props) {
 
                     <Button
                       className="footerDelete me-2"
-                      onClick={() => handleDelete(item.id)}
+                      onClick={() => handleDelete(item.idContent)}
                     >
                       <i className="bi bi-trash"></i>
                     </Button>
                     <div style={{display: "flex", flexDirection: 'column'}}>
                       <Button
                         className="upDownButtons"
-                        onClick={() => handleMove(item.id, "up")}
+                        onClick={() => handleMove(item.idContent, "up")}
                       >
                         <i className="bi bi-caret-up-fill" />
                       </Button>
                       <Button
                         className="upDownButtons"
-                        onClick={() => handleMove(item.id, "down")}
+                        onClick={() => handleMove(item.idContent, "down")}
                       >
                         <i className="bi bi-caret-down-fill" />
                       </Button>
                     </div>
                   </div>
                 </Form.Group>
-              </>
             );
           })}
         </Form>
@@ -381,20 +354,7 @@ function WebPageForm(props) {
         <Button
           className="deleteButton"
           style={{ border: "2px solid red" }}
-          onClick={() => {
-            const page = location.state;
-            if (page) {
-              navigate(location.state.nextpage, {
-                state: {
-                  id: page.id,
-                  title: page.title,
-                  author: page.author,
-                  pubDate: page.publicationDate,
-                  creationDate: page.creationDate,
-                },
-              });
-            } else navigate("/");
-          }}
+          onClick={() => {goBackNavigation()}}
         >
           Cancel
         </Button>
@@ -406,10 +366,10 @@ function WebPageForm(props) {
 function ContentForm(props) {
   const item = props.item;
 
-  let t = "";
+  let t = "flex-grow-1 me-3";
 
   if (item.type === "header") {
-    t = "heading2 flex-grow-1 me-3 ";
+    t = "heading2" + t;
   } else if (item.type === "image") {
     return (
       <>
@@ -417,7 +377,7 @@ function ContentForm(props) {
           <Form.Label>
             <b>{item.type}:</b>
           </Form.Label>
-          <div key={item.id} className="flex-grow-1 me-3">
+          <div key={item.idContent} className={t}>
             <Image
               src={"http://localhost:3000/static/images/" + item.content}
               alt="Image"
@@ -427,8 +387,6 @@ function ContentForm(props) {
         </div>
       </>
     );
-  } else {
-    t = "flex-grow-1 me-3";
   }
 
   return (
@@ -446,7 +404,7 @@ function ContentForm(props) {
         value={item.content}
         onChange={(event) => {
           const updatedLContent = props.lContent.map((el) =>
-            el.id === item.id ? { ...el, content: event.target.value } : el
+            el.idContent === item.idContent ? { ...el, content: event.target.value } : el
           );
           props.setLContent(updatedLContent);
         }}
