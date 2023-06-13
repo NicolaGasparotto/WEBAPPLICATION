@@ -9,7 +9,7 @@ import './style.css'
 import dayjs from "dayjs";
 
 import { PageNotFound } from "./PageNotFound";
-import { getContents } from "../API";
+import { deletePage, getContents, pageList } from "../API";
 
 function WebPage(){
     
@@ -37,8 +37,13 @@ function WebPage(){
             setLContent(list) ;
         });
     }, []);
-
-    // to be implemented the delete page 
+    
+    const handleDelete = async (id) => {
+        //setWaiting(true);
+        await deletePage(id);
+        // setWaiting(false);
+        navigate('/');
+    }
 
     const pubDate = () => {
         if(page.publicationDate === null)
@@ -55,6 +60,7 @@ function WebPage(){
             <header className="col-md-10 col-lg-8 col-xl-6">
                 <h1 className="title">{page.title}</h1>
                 <h3 className="subtitle">Published by <b>{page.author}</b> on {pubDate()} </h3>
+                <h4 className="subtitle2">Created on {page.creationDate.format('DD-MM-YYYY')} </h4>
             </header>
             </Row>
             <Row className="justify-content-center row gx-4 gx-lg-5">
@@ -86,7 +92,7 @@ function WebPage(){
                     state: { 'nextpage': `/pages/${page.idPage}`,
                               'idPage': page.idPage, 'title': page.title, 'author': page.author, 'publicationDate': page.publicationDate.format('DD-MM-YYYY'), 'creationDate': page.creationDate.format('DD-MM-YYYY')
                     } })}}> EDIT Page </Button>
-                <Button className='footerDelete' onClick={() => {navigate('/')}}> DELETE PAGE </Button>
+                <Button className='footerDelete' onClick={() => {handleDelete(page.idPage)}}> DELETE PAGE </Button>
                 </> : <></>}
         </footer>
     </>;

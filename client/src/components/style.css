@@ -1,263 +1,264 @@
-
-.title{
-    font-size: 4.0rem;
-    font-weight: 500;
-    margin: 10;
+.title {
+  font-size: 4rem;
+  font-weight: 500;
 }
 
 .subtitle {
-    font-size: 1.0rem;
-    font-weight: 400;
-    margin: 10;
+  margin-top: 2%;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
-.heading2{
-    font-style: Lora;
-    font-size: 2.5rem;
-    font-weight: 500;
-    margin: 10;
+.subtitle2 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: grey;
+}
+
+.heading2 {
+  font-style: Lora;
+  font-size: 2.5rem;
+  font-weight: 500;
 }
 
 p {
-    font-style: Lora;
-    font-size: 1.2rem;
+  font-style: Lora;
+  font-size: 1.2rem;
 }
 
 article {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 thead {
-    font-weight: 600;
+  font-weight: 600;
 }
 
-.tHeader{
-    margin-bottom: 1.4rem;
+.tHeader {
+  margin-bottom: 1.4rem;
 }
 
 .tHeader span {
-    margin-right: 1.5rem;
-    font-weight: 500;
-}  
+  margin-right: 1.5rem;
+  font-weight: 500;
+}
 
 .table-hover tbody tr:hover {
-    background-color: rgb(255, 247, 238); /* Colore di sfondo durante l'hover */
-    transition: transparent 0.5s ease; /* Transizione dello sfondo */
-  }
-  
-.table-hover {
-    --bs-table-hover-bg: transparent;
+  background-color: rgb(255, 247, 238); /* Colore di sfondo durante l'hover */
+  transition: transparent 0.5s ease; /* Transizione dello sfondo */
 }
-  
- 
+
+.table-hover {
+  --bs-table-hover-bg: transparent;
+}
+
 .trTitle {
-    font-size: 2.7rem;
-    font-weight: 700;
+  font-size: 2.7rem;
+  font-weight: 700;
 }
 
 .trInfo {
-    font-size: 1.0rem;
-    color: grey;
+  font-size: 1rem;
+  color: grey;
 }
 
-.buttonDiv{
-    margin-top: 1rem;
-    flex-direction: row;
-    align-items: baseline;
-    margin-bottom: 1.5rem;
+.buttonDiv {
+  margin-top: 1rem;
+  flex-direction: row;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
 }
 
 .viewButton {
-    width: 100px;
-    color: red;
-    border: 1px solid transparent;
-    border-radius: 50px;
-    background-color: transparent;
-    margin-right: 1rem;
+  width: 100px;
+  color: red;
+  border: 1px solid transparent;
+  border-radius: 50px;
+  background-color: transparent;
+  margin-right: 1rem;
 }
 
-.editButton{
-    width: 90px;
-    color: #2edba1;
-    background-color: transparent;
-    border: none;
-    border-radius: 50px;
-    margin-right: 1rem;
+.editButton {
+  width: 90px;
+  color: #2edba1;
+  background-color: transparent;
+  border: none;
+  border-radius: 50px;
+  margin-right: 1rem;
 }
 
-.deleteButton{
-    width: 150px;
-    color: #f63113;
-    background-color: transparent;
-    border-radius: 50px;
-    border: none;
+.deleteButton {
+  width: 150px;
+  color: #f63113;
+  background-color: transparent;
+  border-radius: 50px;
+  border: none;
 }
 
-.viewButton:hover{
-    color: white;
-    background-color: #fa7f21;
-    border-color: transparent;
-    transition:  color 0.4s;
+.viewButton:hover {
+  color: white;
+  background-color: #fa7f21;
+  border-color: transparent;
+  transition: color 0.4s;
 }
 
-.deleteButton:hover{
-    color: white;
-    background-color: #f63113;
-    transition:  color 0.4s;
+.deleteButton:hover {
+  color: white;
+  background-color: #f63113;
+  transition: color 0.4s;
 }
 
-.editButton:hover{
-    color: white;
-    background-color: #2edba1;
-    transition:  color 0.4s;
+.editButton:hover {
+  color: white;
+  background-color: #2edba1;
+  transition: color 0.4s;
 }
 
 .personalizedNavbar {
-    padding-left: 6%;
-    padding-right: 6%;
-    height: 65px;
+  padding-left: 6%;
+  padding-right: 6%;
+  height: 65px;
 }
 
-.personalizedNavbar::after{
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 4px;
-    background-color: orange; /* Colore della striscia */
+.personalizedNavbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  background-color: orange; /* Colore della striscia */
 }
 
 .icon-size {
-    font-size: 1.7rem; /* Dimensione desiderata dell'immagine */
+  font-size: 1.7rem; /* Dimensione desiderata dell'immagine */
 }
 
 .footerWebPage {
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background-color: transparent;
-    margin-top: 5rem;
-    margin-bottom: 1rem;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: transparent;
+  margin-top: 5rem;
+  margin-bottom: 1rem;
 }
-  
+
 .footerButton {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: max-content;
-    background-color: white;
-    color: rgb(240, 106, 106);
-    border: 2px solid orange;
-    border-radius: 20px;
-    margin-right: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  background-color: white;
+  color: rgb(240, 106, 106);
+  border: 2px solid orange;
+  border-radius: 20px;
+  margin-right: 1rem;
 }
-  
+
 .footerButton:hover {
-    border-color: bisque;
-    color: orangered;
-    background-color: bisque;
-    transition: border-color 0.3s, color 0.4s;
+  border-color: bisque;
+  color: orangered;
+  background-color: bisque;
+  transition: border-color 0.3s, color 0.4s;
 }
-  
+
 .footerDelete {
-    justify-content: center;
-    align-items: center;
-    
-    width: max-content;
-    background-color: white;
-    color: red;
-    border: 2px solid red;
-    border-radius: 20px;
-    
+  justify-content: center;
+  align-items: center;
+
+  width: max-content;
+  background-color: white;
+  color: red;
+  border: 2px solid red;
+  border-radius: 20px;
 }
-  
+
 .footerDelete:hover {
-    border-color: red;
-    color: white;
-    background-color: red;
-    transition:  border-color 0.3s, color 0.4s;
+  border-color: red;
+  color: white;
+  background-color: red;
+  transition: border-color 0.3s, color 0.4s;
 }
 
 .footerEdit {
-    justify-content: center;
-    align-items: center;
-    width: 120px;
-    color: cornflowerblue;
-    background-color: white;
-    border: 2px solid  cornflowerblue;
-    border-radius: 20px;
-    margin-right: 1rem;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  color: cornflowerblue;
+  background-color: white;
+  border: 2px solid cornflowerblue;
+  border-radius: 20px;
+  margin-right: 1rem;
 }
-  
+
 .footerEdit:hover {
-    border-color: #2edba1;
-    color: white;
-    background-color: #2edba1;
-    transition:  border-color 0.3s, color 0.3s;
+  border-color: #2edba1;
+  color: white;
+  background-color: #2edba1;
+  transition: border-color 0.3s, color 0.3s;
 }
 
-.editBlogNameButton{
-    align-self: center;
-    color: #2edba1;
-    background-color: whitesmoke;
-    border-color: #2edba1;
-    border-radius: 30px;
-    margin-right: 0.5rem;
-    margin-bottom: 0.3rem;
+.editBlogNameButton {
+  align-self: center;
+  color: #2edba1;
+  background-color: whitesmoke;
+  border-color: #2edba1;
+  border-radius: 30px;
+  margin-right: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
-.editBlogNameButton:hover{
-    border-color: #2edba1;
-    color: white;
-    background-color: #2edba1;
-    transition:  border-color 0.3s, color 0.3s;
+.editBlogNameButton:hover {
+  border-color: #2edba1;
+  color: white;
+  background-color: #2edba1;
+  transition: border-color 0.3s, color 0.3s;
 }
 
-.backOfficeButton{
-    width: 150px;
-    background-color: white;
-    color: rgb(240, 106, 106);
-    border: 2px solid orange;
-    border-radius: 20px;
+.backOfficeButton {
+  width: 150px;
+  background-color: white;
+  color: rgb(240, 106, 106);
+  border: 2px solid orange;
+  border-radius: 20px;
 }
 
-.backOfficeButton:hover{
-    background-color: orange;
-    color: white;
-    border: 2px solid orange;
-    border-radius: 20px;
+.backOfficeButton:hover {
+  background-color: orange;
+  color: white;
+  border: 2px solid orange;
+  border-radius: 20px;
 }
 
-.loginButtons{
-    display:flex;
-    justify-content: center;
-    margin-top: 1.5rem;
+.loginButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
 }
 
-.loginButton{
-    background-color: white;
-    color: cornflowerblue;
-    border: 2px solid cornflowerblue ;
-    border-radius: 50px;
-    width: 120px  ;
-    margin-right: 1.0rem;
+.loginButton {
+  background-color: white;
+  color: cornflowerblue;
+  border: 2px solid cornflowerblue;
+  border-radius: 50px;
+  width: 120px;
+  margin-right: 1rem;
 }
 
-.newPageButton{
-    background-color: white;
-    color: cornflowerblue;
-    border: 2px solid cornflowerblue ;
-    border-radius: 50px;
-    width: max-content;
-    margin-right: 1.0rem;
+.newPageButton {
+  background-color: white;
+  color: cornflowerblue;
+  border: 2px solid cornflowerblue;
+  border-radius: 50px;
+  width: max-content;
+  margin-right: 1rem;
 }
 
-.upDownButtons{
+.upDownButtons {
   background-color: white;
   color: cornflowerblue;
   border: 2px solid cornflowerblue;
@@ -267,108 +268,127 @@ thead {
   margin-bottom: -0.5rem;
 }
 
-.upDownButtons:hover{
-    background-color: cornflowerblue;
-    color: white;
-    border: 2px solid cornflowerblue ;
+.upDownButtons:hover {
+  background-color: cornflowerblue;
+  color: white;
+  border: 2px solid cornflowerblue;
 }
 
 .addElementsDiv {
-    grid-row: 2;
-    margin-left: 13%;
-    grid-row: 2;
-    display: flex;
-    flex-direction: column;
-    margin-top: 3rem;
-    align-items: flex-start;
+  grid-row: 2;
+  margin-left: 13%;
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+  align-items: flex-start;
 }
 
-.addElementsButton{
-    margin-bottom: 1.0rem;
-    background-color: whitesmoke;
-    color: cornflowerblue;
-    font-weight: 500;
-    border: none;
-    border-radius: 50px;
-    width: max-content;
+.addElementsButton {
+  margin-bottom: 1rem;
+  background-color: whitesmoke;
+  color: cornflowerblue;
+  font-weight: 500;
+  border: none;
+  border-radius: 50px;
+  width: max-content;
 }
 
-.addElementsButton:hover{
-    background-color: cornflowerblue;
-    color: white;
-    transition:  background-color 0.3s, color 0.3s;
+.addElementsButton:hover {
+  background-color: cornflowerblue;
+  color: white;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .image-wrapper {
-    height: 100%; /* Imposta l'altezza del div image-wrapper al 100% del contenitore genitore */
-    display: flex;
-    flex-direction: column;
+  height: 100%; /* Imposta l'altezza del div image-wrapper al 100% del contenitore genitore */
+  display: flex;
+  flex-direction: column;
 }
 
 .figureBlock {
-    flex: 1; /* Il componente Figure occupa tutto lo spazio rimanente all'interno del div image-wrapper */
-    margin-bottom: 5px; /* Margine inferiore per separare il div checkboxWrapper */
-    margin-right: 1rem;
+  flex: 1; /* Il componente Figure occupa tutto lo spazio rimanente all'interno del div image-wrapper */
+  margin-bottom: 5px; /* Margine inferiore per separare il div checkboxWrapper */
+  margin-right: 1rem;
 }
-  
-.checkBoxWrapper {    
-    bottom: 0;
-}  
+
+.checkBoxWrapper {
+  bottom: 0;
+}
 
 .modal-header {
-    background-color: whitesmoke;
+  background-color: whitesmoke;
 }
 
-.modal-header > button{
-    background-color: #f63113;
-    
+.modal-header > button {
+  background-color: #f63113;
 }
 
 .modal-footer {
-    background-color: whitesmoke;
+  background-color: whitesmoke;
 }
 
-.saveButtonNav{
-    background-color: white;
-    color: cornflowerblue;
-    border: 2px solid cornflowerblue;
-    border-radius: 50px;
-    margin-right: 0.5rem;
-    margin-left: 10%;
+.saveButtonNav {
+  background-color: white;
+  color: cornflowerblue;
+  border: 2px solid cornflowerblue;
+  border-radius: 50px;
+  margin-right: 0.5rem;
+  margin-left: 10%;
 }
 
-.saveButtonNav:hover{
-    background-color: cornflowerblue;
-    color: white;
-    border: 2px solid cornflowerblue;
+.saveButtonNav:hover {
+  background-color: cornflowerblue;
+  color: white;
+  border: 2px solid cornflowerblue;
 }
 
-.cancelButtonNav{
-    background-color: white;
-    color: red;
-    border: 2px solid red;
-    border-radius: 50px;
-    width: 35%;
+.cancelButtonNav {
+  background-color: white;
+  color: red;
+  border: 2px solid red;
+  border-radius: 50px;
+  width: 35%;
 }
 
-.cancelButtonNav:hover{
-    background-color: red;
-    color: white;
-    border: 2px solid red;
+.cancelButtonNav:hover {
+  background-color: red;
+  color: white;
+  border: 2px solid red;
 }
 
-.logoutButton{
-    background-color: white;
-    color: red;
-    border: 2px solid red;
-    border-radius: 35px;
-    transform: scale(0.7);
-    margin-top: 1%;
+.logoutButton {
+  background-color: white;
+  color: red;
+  border: 2px solid red;
+  border-radius: 35px;
+  transform: scale(0.7);
+  margin-top: 1%;
 }
 
-.logoutButton:hover{
-    background-color: red;
-    color: white;
-    border: 2px solid red;
+.logoutButton:hover {
+  background-color: red;
+  color: white;
+  border: 2px solid red;
 }
 
+#myModal .modal-content {
+  background-color: orangered;
+  font-weight: 500;
+}
+
+#myModal .modal-header {
+  background-color: transparent;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+#myModal .modal-body {
+  padding-right: 36px;
+  padding-top: 2%;
+  padding-bottom: 26px;
+}
+
+#myModal .modal-header > button {
+  background-color: transparent;
+}

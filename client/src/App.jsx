@@ -6,7 +6,7 @@ import { Navigate } from 'react-router-dom';
 
 function App() {
   
-  const [user, setUser] = useState({'id': 1, 'backOfficeView': false, 'name': 'Author2', 'admin': true}) ;
+  const [user, setUser] = useState({'id': 1, 'backOfficeView': false, 'name': 'Jane Smith', 'admin': true}) ;
   console.log('App.jsx user: ', user) ;
 
   return <UserContext.Provider value={user}>

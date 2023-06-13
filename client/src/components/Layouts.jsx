@@ -4,7 +4,7 @@ import "./style.css";
 
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Navbar, Button, Form } from "react-bootstrap";
-import { Blog } from "./webpages";
+import { Blog } from "./WebPages";
 
 import { useContext, useState } from "react";
 import { UserContext } from "./UserContext";

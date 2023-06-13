@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const dao = require("./dao"); // module for accessing the DB
+const fs = require("fs");
 
 function delay(req, res, next) {
   setTimeout(() => {
@@ -69,13 +70,29 @@ app.put("/api/pages/:pageId", (req, res) => {
 });
 
 app.post("/api/pages", (req, res) => {
-  const { contents, ...page } = req.body;
+  const { lContents: contents, ...page } = req.body;
 
   dao
     .addNewPage(page, contents)
     .then((values) => res.json(values))
     .catch((error) => res.status(500).send(error));
 });
+
+// GET all the images available
+app.get("/api/images", (req, res) => {
+  const imageDirectory = "public/images"; // Directory delle immagini sul server
+  
+  fs.readdir(imageDirectory, (err, files) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Internal Server Error");
+    } else {
+      const imageNames = files.filter((file) => file.endsWith(".png") || file.endsWith(".jpg"));
+      res.json(imageNames);
+    }
+  });
+});
+
 
 // GET blogname
 app.get("/api/blogname", (req, res) => {

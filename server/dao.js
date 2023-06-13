@@ -59,6 +59,7 @@ exports.deletePage = (pageId) => {
 };
 
 exports.addNewPage = (page, lContents) => {
+
   return new Promise((resolve, reject) => {
     db.serialize(() => {
       db.run(
@@ -68,8 +69,7 @@ exports.addNewPage = (page, lContents) => {
           if (err) {
             reject(err.message);
           } else {
-            const idPage = this.lastID;
-            console.log(idPage);
+            const idPage = this.lastID; 
             const stmt = db.prepare(
               "INSERT INTO contents (idContent, idPage, type, content) VALUES (?, ?, ?, ?)"
             );
@@ -86,7 +86,6 @@ exports.addNewPage = (page, lContents) => {
 };
 
 exports.updatePageContents = (pageId, page, lContents) => {
-  console.log('dao:\n', lContents);
 
   return new Promise((resolve, reject) => {
     db.serialize(() => {

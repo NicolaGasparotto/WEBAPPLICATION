@@ -33,6 +33,7 @@ async function deletePage(pageId) {
 }
 
 async function addNewPage(page) {
+  
   try {
     const response = await fetch(APIURL + '/pages', {
       method: 'POST',
@@ -123,6 +124,27 @@ async function editBlogName(newName) {
   }
 }
 
+async function getAvailableImages() {
+  try {
+    const response = await fetch(APIURL + '/images');
+    if (response.ok) {
+      const images = await response.json();
+      const imagesList = [];
+      let newId = 0;
+      images.forEach((image) => {
+          imagesList.push({"id": newId++, "filename": image, "name": `Image ${newId}`});
+      })
+      return imagesList;
+    } else {
+      const message = await response.text();
+      throw new Error('Application error: ' + message);
+    }
+  } catch (error) {
+    throw new Error('Network error: ' + error.message);
+  }
+}
+
+
 export {
   pageList,
   deletePage,
@@ -131,4 +153,5 @@ export {
   editPage,
   getBlogName,
   editBlogName,
+  getAvailableImages
 };
