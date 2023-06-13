@@ -36,72 +36,95 @@ INSERT INTO users (name, username, password, salt, admin) VALUES
     ('John Doe', 'johndoe', 'password1', 'salt1', 0),
     ('Jane Smith', 'janesmith', 'password2', 'salt2', 0),
     ('Mike Johnson', 'mikejohnson', 'password3', 'salt3', 1);
-
-DELETE FROM contents;
-
-
-INSERT INTO pages (title, author, creationDate, publicationDate) VALUES
-    ('Page 1', (SELECT name FROM users WHERE name = 'John Doe'), '2023-06-01', '2023-06-02'),
-    ('Page 2', (SELECT name FROM users WHERE name = 'John Doe'), '2023-06-03', '2023-06-04'),
-    ('Page 3', (SELECT name FROM users WHERE name = 'Jane Smith'), '2023-06-05', NULL),
-    ('Page 4', (SELECT name FROM users WHERE name = 'Jane Smith'), '2023-06-06', '2023-06-07'),
-    ('Page 5', (SELECT name FROM users WHERE name = 'Mike Johnson'), '2023-06-08', '2023-06-09'),
-    ('Page 6', (SELECT name FROM users WHERE name = 'Mike Johnson'), '2023-06-10', '2023-06-11');
-
---- PRAGMA table_info(pages);
 */
 
 
--- Popolamento per la pagina 1
-INSERT INTO contents (idPage, idContent, type, content) VALUES
-(1, 1, 'header', 'Header content for page 1'),
-(1, 2, 'image', 'giraffe_01.png'),
-(1, 3, 'paragraph', 'Content of the paragraph for page 1');
+-- Cancellazione dei dati dalla tabella "contents"
+DELETE FROM contents;
+DELETE FROM pages;
 
--- Popolamento per la pagina 2
-INSERT INTO contents (idPage, idContent, type, content) VALUES
-(2, 1, 'header', 'Header content for page 2'),
-(2, 2, 'image', 'giraffe_02.png'),
-(2, 3, 'paragraph', 'Content of the paragraph for page 2'),
-(2, 4, 'paragraph', 'Additional content of the paragraph for page 2. This paragraph has more than double the words compared to the previous example.');
+-- Popolamento della tabella "pages"
+INSERT INTO pages (title, author, creationDate, publicationDate) VALUES
+    ('The Graceful Giants: Exploring the World of Giraffes', 'John Doe', '2023-06-01', '2023-06-02'),
+    ('Feeding Habits of Giraffes: Masters of Leafy Cuisine', 'John Doe', '2023-06-03', '2023-06-04'),
+    ('Social Behavior of Giraffes: Towers of Togetherness', 'Jane Smith', '2023-06-05', NULL),
+    ('Survivors of the Savannah: Giraffes in Arid Environments', 'Jane Smith', '2023-06-06', '2023-06-07'),
+    ('The Remarkable Anatomy of Giraffes', 'Jane Smith', '2023-06-08', '2023-06-09'),
+    ('Giraffes: Symbols of Elegance and Beauty', 'Jane Smith', '2023-06-10', '2023-06-11'),
+    ('The Plight of Giraffes: Protecting an Endangered Species', 'Mike Johnson', '2023-06-12', NULL),
+    ('Giraffes: Nature s Wonders in the African Wilderness', 'Mike Johnson', '2023-06-13', '2023-06-14');
 
--- Popolamento per la pagina 3
-INSERT INTO contents (idPage, idContent, type, content) VALUES
-(3, 1, 'header', 'Header content for page 3'),
-(3, 2, 'image', 'giraffe_03.png'),
-(3, 3, 'paragraph', 'Content of the paragraph for page 3'),
-(3, 4, 'paragraph', 'Additional content of the paragraph for page 3. This paragraph has more than double the words compared to the previous example.'),
-(3, 5, 'paragraph', 'Another content of the paragraph for page 3');
+-- Popolamento della tabella "contents"
 
--- Popolamento per la pagina 4
+-- Contenuti per la pagina 1
 INSERT INTO contents (idPage, idContent, type, content) VALUES
-(4, 1, 'header', 'Header content for page 4'),
-(4, 2, 'image', 'giraffe_04.png'),
-(4, 3, 'paragraph', 'Content of the paragraph for page 4'),
-(4, 4, 'paragraph', 'Additional content of the paragraph for page 4. This paragraph has more than double the words compared to the previous example.'),
-(4, 5, 'paragraph', 'Another content of the paragraph for page 4'),
-(4, 6, 'paragraph', 'And another one for page 4. This paragraph also has more than double the words compared to the previous example.');
+    (1, 1, 'header', 'Introduction to Giraffes'),
+    (1, 2, 'paragraph', 'Giraffes, with their long necks and towering presence, are majestic creatures that roam the African plains. They are known for their incredible height, making them the tallest animals on the planet.'),
+    (1, 3, 'header', 'Distinctive Physical Features'),
+    (1, 4, 'paragraph', 'One of the unique features of giraffes is their long neck, which allows them to reach high branches and leaves. Their elongated legs and powerful muscles enable them to move gracefully across the savannah, while their distinctive coat patterns provide camouflage in the wild.'),
+    (1, 5, 'image', 'giraffe_01.png'),
+    (1, 6, 'image', 'giraffe_03.png');
 
--- Popolamento per la pagina 5
+-- Contenuti per la pagina 2
 INSERT INTO contents (idPage, idContent, type, content) VALUES
-(5, 1, 'header', 'Header content for page 5'),
-(5, 2, 'image', 'giraffe_01.png'),
-(5, 3, 'paragraph', 'Content of the paragraph for page 5'),
-(5, 4, 'paragraph', 'Additional content of the paragraph for page 5. This paragraph has more than double the words compared to the previous example.'),
-(5, 5, 'paragraph', 'Another content of the paragraph for page 5'),
-(5, 6, 'paragraph', 'And another one for page 5. This paragraph also has more than double the words compared to the previous example.'),
-(5, 7, 'paragraph', 'Last content of the paragraph for page 5');
+    (2, 1, 'header', 'Adaptations for High Vegetation'),
+    (2, 2, 'paragraph', 'Giraffes have developed remarkable adaptations to feed on the leaves of tall trees. Their long necks and specialized tongues allow them to strip foliage from branches. Their diet primarily consists of leaves, twigs, and shoots, providing them with the necessary nutrients for survival.'),
+    (2, 3, 'header', 'Feeding Techniques'),
+    (2, 4, 'paragraph', 'To reach the highest leaves, giraffes use their elongated necks to extend upwards while standing on their hind legs. They delicately pluck the foliage with their prehensile tongues, which can measure up to 20 inches long.'),
+    (2, 5, 'image', 'giraffe_02.png'),
+    (2, 6, 'image', 'giraffe_05.png');
 
--- Popolamento per la pagina 6
+-- Contenuti per la pagina 3
 INSERT INTO contents (idPage, idContent, type, content) VALUES
-(6, 1, 'header', 'Header content for page 6'),
-(6, 2, 'image', 'giraffe_02.png'),
-(6, 3, 'paragraph', 'Content of the paragraph for page 6'),
-(6, 4, 'paragraph', 'Additional content of the paragraph for page 6. This paragraph has more than double the words compared to the previous example.'),
-(6, 5, 'paragraph', 'Another content of the paragraph for page 6'),
-(6, 6, 'paragraph', 'And another one for page 6. This paragraph also has more than double the words compared to the previous example.'),
-(6, 7, 'paragraph', 'Last content of the paragraph for page 6'),
-(6, 8, 'paragraph', 'Penultimate content of the paragraph for page 6. This paragraph has more than double the words compared to the previous example.');
+    (3, 1, 'header', 'Living in Towering Communities'),
+    (3, 2, 'paragraph', 'Giraffes are social animals that form groups known as towers. These towers mainly consist of adult females and their young offspring. Male giraffes, on the other hand, tend to live in solitude or associate with other young males. Communication among giraffes involves body movements, visual signals, and vocalizations.'),
+    (3, 3, 'header', 'Courtship and Mating'),
+    (3, 4, 'paragraph', 'During the mating season, male giraffes engage in a unique behavior called necking. They use their long necks as weapons to compete for dominance and the right to mate with females. This ritualistic behavior involves swinging their necks at each other in powerful blows.'),
+    (3, 5, 'image', 'giraffe_03.png'),
+    (3, 6, 'image', 'giraffe_06.png');
+
+-- Contenuti per la pagina 4
+INSERT INTO contents (idPage, idContent, type, content) VALUES
+    (4, 1, 'header', 'Adaptations to Arid Conditions'),
+    (4, 2, 'paragraph', 'Giraffes are well adapted to survive in arid environments such as the savannah. They can endure long periods without water by obtaining moisture from the leaves they consume. These remarkable animals have developed physiological mechanisms to conserve water and regulate their body temperature efficiently.'),
+    (4, 3, 'header', 'Water Requirements'),
+    (4, 4, 'paragraph', 'Although giraffes can survive for weeks without drinking water, they will drink when available. They obtain most of their hydration from the moisture-rich leaves, but they can also utilize water sources such as rivers and waterholes when necessary.');
+
+-- Contenuti per la pagina 5
+INSERT INTO contents (idPage, idContent, type, content) VALUES
+    (5, 1, 'header', 'The Extraordinary Neck'),
+    (5, 2, 'paragraph', 'The most recognizable feature of giraffes is their long neck, composed of seven cervical vertebrae, just like humans. However, each of these vertebrae can measure up to 10 inches in length, allowing giraffes to reach foliage at considerable heights.'),
+    (5, 3, 'header', 'Powerful Hearts and Circulatory System'),
+    (5, 4, 'paragraph', 'To pump blood up their long necks against gravity, giraffes possess a robust cardiovascular system. Their hearts can weigh up to 25 pounds and pump approximately 60 liters of blood per minute, ensuring an adequate supply of oxygen and nutrients to all body parts.'),
+    (5, 5, 'image', 'giraffe_05.png'),
+    (5, 6, 'image', 'giraffe_07.png');
+
+-- Contenuti per la pagina 6
+INSERT INTO contents (idPage, idContent, type, content) VALUES
+    (6, 1, 'header', 'Aesthetic Grace'),
+    (6, 2, 'paragraph', 'Giraffes are often regarded as symbols of elegance and beauty. Their long, slender necks, expressive eyes, and gentle movements captivate observers worldwide. Their presence in the wild evokes a sense of awe and wonder.'),
+    (6, 3, 'header', 'A Photographer s Delight'),
+    (6, 4, 'paragraph', 'For wildlife enthusiasts and photographers, encountering giraffes in their natural habitat is a dream come true. These magnificent creatures provide stunning photographic opportunities, especially against the backdrop of the African savannah.'),
+    (6, 5, 'image', 'giraffe_06.png'),
+    (6, 6, 'image', 'giraffe_08.png');
+
+-- Contenuti per la pagina 7
+INSERT INTO contents (idPage, idContent, type, content) VALUES
+    (7, 1, 'header', 'Threats to Giraffe Populations'),
+    (7, 2, 'paragraph', 'Despite their grandeur, giraffes face significant threats to their survival. Habitat loss, poaching, and disease have contributed to the decline in their population numbers. Urgent conservation efforts are required to protect these iconic animals.'),
+    (7, 3, 'header', 'Conservation Initiatives'),
+    (7, 4, 'paragraph', 'Various organizations and wildlife conservation groups are actively working to safeguard giraffes and their habitats. These efforts involve promoting anti-poaching measures, creating protected areas, and raising awareness about the importance of giraffe conservation.'),
+    (7, 5, 'image', 'giraffe_01.png'),
+    (7, 6, 'image', 'giraffe_07.png');
+
+-- Contenuti per la pagina 8
+INSERT INTO contents (idPage, idContent, type, content) VALUES
+    (8, 1, 'header', 'Nature s Masterpiece'),
+    (8, 2, 'paragraph', 'In conclusion, giraffes are truly nature s wonders. Their unique physical attributes, captivating social behavior, and ability to thrive in challenging environments make them extraordinary creatures. Preserving their existence and safeguarding their habitats are crucial for ensuring that future generations can admire and appreciate these magnificent animals.'),
+    (8, 3, 'header', 'The Splendor of Giraffe Patterns'),
+    (8, 4, 'paragraph', 'Each giraffe s coat pattern is as unique as a human fingerprint. The distinct markings serve as effective camouflage in the wild, helping them blend with the surrounding vegetation and providing protection against predators.'),
+    (8, 5, 'image', 'giraffe_02.png'),
+    (8, 6, 'image', 'giraffe_08.png');
 
 
 /*

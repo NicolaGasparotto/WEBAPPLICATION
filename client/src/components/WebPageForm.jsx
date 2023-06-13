@@ -231,7 +231,7 @@ function WebPageForm(props) {
                 className="title"
                 style={{ paddingTop: "10px" }}
                 id="title"
-                type="text"
+                as="textarea"
                 required={true}
                 value={title}
                 placeholder={title}
