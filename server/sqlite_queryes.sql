@@ -6,15 +6,6 @@ DROP TABLE IF EXISTS pages;
 */
 
 /*
-CREATE TABLE users (
-    userId INTEGER PRIMARY KEY,
-    name TEXT,
-    username TEXT,
-    password TEXT,
-    salt TEXT,
-    admin INTEGER DEFAULT 0
-);
-
 CREATE TABLE pages (
     idPage INTEGER PRIMARY KEY,
     title TEXT,
@@ -38,7 +29,7 @@ INSERT INTO users (name, username, password, salt, admin) VALUES
     ('Mike Johnson', 'mikejohnson', 'password3', 'salt3', 1);
 */
 
-
+/*
 -- Cancellazione dei dati dalla tabella "contents"
 DELETE FROM contents;
 DELETE FROM pages;
@@ -125,7 +116,7 @@ INSERT INTO contents (idPage, idContent, type, content) VALUES
     (8, 4, 'paragraph', 'Each giraffe s coat pattern is as unique as a human fingerprint. The distinct markings serve as effective camouflage in the wild, helping them blend with the surrounding vegetation and providing protection against predators.'),
     (8, 5, 'image', 'giraffe_02.png'),
     (8, 6, 'image', 'giraffe_08.png');
-
+*/
 
 /*
 CREATE TABLE blogname (
@@ -135,3 +126,22 @@ CREATE TABLE blogname (
 
 INSERT INTO blogname (name) VALUES ('My Blog');
 */
+/*
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    username TEXT,
+    hash TEXT,
+    salt TEXT,
+    name TEXT,
+    backOfficeView INTEGER DEFAULT 0,
+    admin INTEGER DEFAULT 0
+);
+*/
+
+/* pwdjohn, pwdjane, pwdmike */
+INSERT INTO users (username, hash, salt, name, backOfficeView, admin) VALUES
+    ('johndoe@polito.it', 'eef0cf837e95b0f4a5d410dd53a7f0ef4043480ccd03ccdfa1dfe60c03d7c04a', 'cf5dcac259d783dd', 'John Doe', 0, 0),
+    ( 'janesmith@polito.it', 'ed58a7900f5260c5d345335970f41c16456a4fef6eee8f691615226a543002e9', '62e812c857f1eab0', 'Jane Smith', 0, 0),
+    ( 'mikejohnson@polito.it', '48523e29854c82c8298750424caed253e5842f45d41152390581ee44940bdef1', '1633d64620394d87', 'Mike Johnson', 0, 1);

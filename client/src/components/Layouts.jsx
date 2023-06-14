@@ -1,12 +1,13 @@
 import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./style.css";
+import { getBlogName, editBlogName, doLogout } from "../API";
 
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { Container, Row, Col, Navbar, Button, Form } from "react-bootstrap";
 import { Blog } from "./WebPages";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "./UserContext";
 
 function DefaultLayout() {
@@ -80,13 +81,26 @@ function MainLayout(props) {
 }
 
 function NavigationBar() {
+
   const user = useContext(UserContext);
 
-  const initialBlogName = "BlogName";
+  const navigate = useNavigate();
 
   const [editing, setEditing] = useState(false);
-  const [blogName, setBlogName] = useState(initialBlogName);
-  const [name, setName] = useState(initialBlogName);
+  const [blogName, setBlogName] = useState(" ");
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    getBlogName().then((name) => {
+      setBlogName(name);
+      setName(name);
+    });
+  }, [blogName]);
+
+  const handleEditBlogName = async (name) => {
+    await editBlogName(name);
+    setBlogName(name);
+  };
 
   return (
     <>
@@ -107,7 +121,7 @@ function NavigationBar() {
                   <Button
                     className="saveButtonNav"
                     onClick={() => {
-                      setBlogName(name);
+                      handleEditBlogName(name);
                       setEditing(false);
                     }}
                   >
@@ -146,22 +160,35 @@ function NavigationBar() {
               </>
             )}
           </Navbar.Brand>
-          <div style={{ display: "flex", flexDirection: "row", transform: "scale(1.2)" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              transform: "scale(1.2)",
+            }}
+          >
             <Link
               to="/login"
               className="d-flex align-items-center text-decoration-none"
             >
-              <span style={{ color: "black", marginRight: "1rem", marginTop: "0.1rem", fontWeight: "450"}}>
-                  {user.admin
-                    ? `Admin: ${user.name}`
-                    : user.id
-                    ? user.name
-                    : "Login"}
+              <span
+                style={{
+                  color: "black",
+                  marginRight: "1rem",
+                  marginTop: "0.1rem",
+                  fontWeight: "450",
+                }}
+              >
+                {user.admin
+                  ? `Admin: ${user.name}`
+                  : user.id
+                  ? `${user.name}`
+                  : "Login"}
               </span>
               <i className="bi bi-person-circle icon-size" />
             </Link>
             {user.id ? (
-              <Button className="logoutButton">
+              <Button className="logoutButton" onClick={() => { navigate('/')}}>
                 <i className="bi bi-box-arrow-right"></i>
               </Button>
             ) : null}

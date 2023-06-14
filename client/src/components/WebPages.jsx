@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "./UserContext";
 
-import { pageList, deletePage } from "../API";
+import { pageList, deletePage, getBlogName } from "../API";
 
 import dayjs from "dayjs";
 import "./style.css";
@@ -19,6 +19,7 @@ function Blog() {
       setWebPages(list);
     });
   }, []);
+
 
   const handleDelete = async (id) => {
     //setWaiting(true);
@@ -37,6 +38,9 @@ function Blog() {
   return (
     <>
       <Container className="justify-content-center col-10 col-xxl-6 col-xl-7">
+        <header style={{marginBottom: "2rem", marginTop: "2rem"}}>
+          <h1>Welcome to the Home Page</h1>
+        </header>
         <span> Order By:</span>
         <Container className="tHeader">
           <span> Title </span>

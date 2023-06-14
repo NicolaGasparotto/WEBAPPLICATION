@@ -7,7 +7,13 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const dao = require("./dao"); // module for accessing the DB
+const userDao = require('./daoUser'); // module for accessing the user table in the DB
 const fs = require("fs");
+
+const passport = require('passport');                              // authentication middleware
+const LocalStrategy = require('passport-local');                   // authentication strategy (username and password)
+const session = require('express-session');
+
 
 function delay(req, res, next) {
   setTimeout(() => {
@@ -23,6 +29,7 @@ app.use(express.json());
 const corsOptions = {
   origin: "http://localhost:5173",
   optionsSuccessStatus: 200,
+  credentials: true
 };
 app.use(cors(corsOptions));
 
@@ -30,6 +37,56 @@ app.use(cors(corsOptions));
 
 // to send static files (images in this case)
 app.use("/static", express.static("public"));
+
+app.use(session({
+  secret: "it's a secret the session id!!",
+  resave: false,
+  saveUninitialized: false,
+}));
+
+
+/*** Passport ***/
+
+passport.use(new LocalStrategy((username, password, callback) => {
+  // verify function
+  userDao.getUser(username, password).then((user) => {
+      callback(null, user);
+  }).catch((err) => {
+      callback(err)
+  });
+}));
+
+passport.serializeUser((user, callback) => {
+  callback(null, { id: user.id, email: user.email, name: user.name });
+});
+passport.deserializeUser((user, callback) => {
+  callback(null, user);
+});
+
+app.use(passport.authenticate('session'));
+
+/** Defining authentication verification middleware **/
+const isLogged = (req, res, next) => {
+  if (req.isAuthenticated()) {
+      return next();
+  } else {
+      res.status(500).send("NOT AUTHENTICATED - GO AWAY");
+  }
+}
+
+/*** Utility Functions ***/
+
+
+/*** Users APIs ***/
+app.post('/api/login', passport.authenticate('local'), (req, res) => {
+  const {hash: hashtmp, salt: salttmp, ...user} = req.user;
+  res.json(user);
+});
+
+// POST /api/logout
+app.post('/api/logout', (req, res) => {
+  req.logout(()=>{res.end()});
+})
 
 /*** APIs ***/
 // GET all page web
@@ -48,6 +105,15 @@ app.get("/api/contents/:pageId", (req, res) => {
     .then((contents) => res.json(contents))
     .catch((error) => res.status(500).send(error));
 });
+
+// GET blogname
+app.get("/api/blogname", (req, res) => {
+  dao
+    .getBlogName()
+    .then((name) => res.json(name))
+    .catch((error) => res.status(500).send(error));
+});
+
 
 // DELETE page and its contents based on pageId
 app.delete("/api/pages/:pageId", (req, res) => {
@@ -93,14 +159,6 @@ app.get("/api/images", (req, res) => {
   });
 });
 
-
-// GET blogname
-app.get("/api/blogname", (req, res) => {
-  dao
-    .getBlogName()
-    .then((name) => res.json(name))
-    .catch((error) => res.status(500).send(error));
-});
 
 // PUT blogname
 app.put("/api/blogname", (req, res) => {
