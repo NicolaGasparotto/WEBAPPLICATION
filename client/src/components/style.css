@@ -1,3 +1,4 @@
+
 .title {
   font-size: 3rem;
   font-weight: 500;
@@ -358,12 +359,12 @@ thead {
 }
 
 .logoutButton {
+  font-weight: 600;
   background-color: white;
   color: red;
   border: 2px solid red;
   border-radius: 35px;
   transform: scale(0.7);
-  margin-top: 1%;
 }
 
 .logoutButton:hover {
@@ -373,7 +374,7 @@ thead {
 }
 
 #myModal .modal-content {
-  background-color: orangered;
+  background-color: #f63113;
   font-weight: 500;
 }
 

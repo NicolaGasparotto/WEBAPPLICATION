@@ -260,7 +260,7 @@ function WebPageForm(props) {
           </Form.Group>
 
           <Form.Group className="mb-5">
-            <Form.Label>publicationDate</Form.Label>
+            <Form.Label>Publication date</Form.Label>
             {/* publicationDate is an optional parameter. It have to be properly rendered only if available. */}
             <Form.Control
               type="date"
@@ -292,6 +292,7 @@ function WebPageForm(props) {
                   >
                     <i className="bi bi-trash"></i>
                   </Button>
+                  { lContent.length > 1 &&
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     <Button
                       className="upDownButtons"
@@ -306,6 +307,7 @@ function WebPageForm(props) {
                       <i className="bi bi-caret-down-fill" />
                     </Button>
                   </div>
+                  }
                 </div>
               </Form.Group>
             );

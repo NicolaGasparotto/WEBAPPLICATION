@@ -80,11 +80,17 @@ Content-Type: application/json
 GET http://localhost:3000/api/images
 
 ### POST login
-POST http://localhost:3000/api/login
+POST http://localhost:3000/api/sessions
 Content-Type: application/json
 
 {
   "username": "janesmith@polito.it",
-  "password": "pwdjanse"
+  "password": "pwdjane"
 }
+
+### GET login
+GET http://localhost:3000/api/sessions/current
+
+### DELETE login
+DELETE http://localhost:3000/api/sessions/current
 

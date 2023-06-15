@@ -13,18 +13,6 @@ function Login(props) {
 
   const navigate = useNavigate();
 
-  const extractErrorMessage = (htmlString) => {
-    const startIndex = htmlString.indexOf('<pre>');
-    const endIndex = htmlString.indexOf('</pre>', startIndex);
-  
-    if (startIndex !== -1 && endIndex !== -1) {
-      const errorMessage = htmlString.substring(startIndex + 5, endIndex);
-      return errorMessage.trim();
-    } else {
-      return 'An error occurred';
-    }
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     async function validateLogin() {
@@ -32,13 +20,12 @@ function Login(props) {
         await props.handleLogin(username, password);
         navigate('/');
       }catch(error) {
-        const errorMessage = extractErrorMessage(error.message);
+        const errorMessage = error ? error.message : "An error occurred";
         setErrorMessage(errorMessage);
         setShow(true);
       }
     }
     validateLogin();
-    
 }
 
   return (
@@ -75,7 +62,7 @@ function Login(props) {
           </Form.Group>
           <div className='loginButtons'>
             <Button className="loginButton" type="submit">Login</Button>
-            <Button className='footerButton' onClick={() => {navigate('/')}}> Go Back To Home Page </Button>
+            <Button className='footerButton' onClick={() => {navigate('/')}}> Back to Home Page </Button>
           </div>
       </Form>
       </Col>

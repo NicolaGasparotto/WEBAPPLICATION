@@ -19,6 +19,7 @@ async function deletePage(pageId) {
   try {
     const response = await fetch(APIURL + `/pages/${pageId}`, {
       method: "DELETE",
+      credentials: "include"
     });
 
     if (response.ok) {
@@ -40,6 +41,7 @@ async function addNewPage(page) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(page),
+      credentials: "include"
     });
     if (response.ok) {
       return true;
@@ -75,6 +77,7 @@ async function editPage(pageId, page) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(page),
+      credentials: "include"
     });
     if (response.ok) {
       return true;
@@ -110,6 +113,7 @@ async function editBlogName(newName) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name: newName }),
+      credentials: "include"
     });
     if (response.ok) {
       return true;
@@ -124,7 +128,7 @@ async function editBlogName(newName) {
 
 async function getAvailableImages() {
   try {
-    const response = await fetch(APIURL + "/images");
+    const response = await fetch(APIURL + "/images", { credentials: "include" });
     if (response.ok) {
       const images = await response.json();
       const imagesList = [];
@@ -148,7 +152,7 @@ async function getAvailableImages() {
 
 async function checkLogin(username, password) {
   try {
-    const response = await fetch(APIURL + "/login", {
+    const response = await fetch(APIURL + "/sessions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -157,26 +161,47 @@ async function checkLogin(username, password) {
         username: username,
         password: password,
       }),
+      credentials: "include"
     });
     if (response.ok) {
       const user = await response.json();
       return user;
     } else {
-      const message = await response.text();
-      throw new Error(response.statusText + " " + message);
+      const message = await response.json();
+      console.log(message, "\n", message.error);
+      throw new Error(message.error);
     }
   } catch (error) {
     throw new Error(error.message, { cause: error });
   }
 }
 
+async function getUserInfo() {
+  try {
+    const response = await fetch(APIURL + "/sessions/current", { method: "GET", credentials: "include" });
+    if (response.ok) {
+      console.log("getUserInfo: response.ok");
+      const user = await response.json();
+      return user;
+    } else {
+      console.log("getUserInfo: response not ok");
+      const message = await response.json();
+      throw new Error(message.error);
+    }
+  } catch (error) {
+    throw new Error(error.message, { cause: error });
+  }
+}
+
+
 /**
  * This function destroy the current user's session and execute the log-out.
  */
 async function doLogout() {
   try {
-      const response = await fetch(APIURL + '/logout', {
-          method: 'POST',
+      const response = await fetch(APIURL + '/sessions/current', {
+          method: 'DELETE',
+          credentials: 'include'
       });
       if (response.ok) {
           return true ;
@@ -199,5 +224,6 @@ export {
   editBlogName,
   getAvailableImages,
   checkLogin,
+  getUserInfo,
   doLogout
 };

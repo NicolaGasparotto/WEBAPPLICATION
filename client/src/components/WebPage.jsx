@@ -85,7 +85,7 @@ function WebPage(){
             </Row>
         </div>
         <footer className="footerWebPage"> 
-                <Button className='footerButton' onClick={() => {navigate('/')}}> Go Back To Home Page </Button>
+                <Button className='footerButton' onClick={() => {navigate('/')}}> Back to Home Page </Button>
                 
                 {(user.backOfficeView && (user.name === page.author || user.admin)) ? <>
                 <Button className='footerEdit' onClick={() => {navigate(`/pages/${page.idPage}/edit`, {

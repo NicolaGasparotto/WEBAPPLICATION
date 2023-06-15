@@ -38,11 +38,11 @@ function Blog() {
   return (
     <>
       <Container className="justify-content-center col-10 col-xxl-6 col-xl-7">
-        <header style={{marginBottom: "2rem", marginTop: "2rem"}}>
-          <h1>Welcome to the Home Page</h1>
+        <header style={{marginBottom: "3rem", marginTop: "2rem"}}>
+          <h1 style={{fontStyle: "italic"}}>Welcome to the Home Page</h1>
         </header>
-        <span> Order By:</span>
-        <Container className="tHeader">
+        <span style={{fontSize: "1rem"}}> Order by:</span>
+        <Container className="tHeader mt-1">
           <span> Title </span>
           <span> Author </span>
           <span> PublicationDate </span>

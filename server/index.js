@@ -12,20 +12,15 @@ const fs = require("fs");
 
 const passport = require('passport');                              // authentication middleware
 const LocalStrategy = require('passport-local');                   // authentication strategy (username and password)
-const session = require('express-session');
 
-
-function delay(req, res, next) {
-  setTimeout(() => {
-    next();
-  }, 1500);
-}
 
 // init express
 const app = express();
-
 app.use(morgan("dev"));
 app.use(express.json());
+
+
+/** Set up and enabling Cross-Origin Resurce Sharing */
 const corsOptions = {
   origin: "http://localhost:5173",
   optionsSuccessStatus: 200,
@@ -33,60 +28,98 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-//app.use(delay); // to test loading. REMOVE IT!
+/** Delay MiddleWare */
+/*
+const delay = require('express-delay');
+app.use(delay(200,2500));
+*/
 
 // to send static files (images in this case)
 app.use("/static", express.static("public"));
 
-app.use(session({
-  secret: "it's a secret the session id!!",
-  resave: false,
-  saveUninitialized: false,
-}));
-
 
 /*** Passport ***/
-
 passport.use(new LocalStrategy((username, password, callback) => {
-  // verify function
   userDao.getUser(username, password).then((user) => {
-      callback(null, user);
-  }).catch((err) => {
-      callback(err)
-  });
+      if(!user)
+        return callback(null, false, 'Incorrect username or password');  
+      
+      return callback(null, user); // NOTE: user info in the session (all fields returned by userDao.getUser, i.e, id, username, name)
+    }).catch((err) => { return callback(err); });
 }));
 
-passport.serializeUser((user, callback) => {
-  callback(null, { id: user.id, email: user.email, name: user.name });
-});
-passport.deserializeUser((user, callback) => {
+// Serializing in the session the user object given from LocalStrategy(verify).
+passport.serializeUser(function (user, callback) {
   callback(null, user);
 });
 
+// Starting from the data in the session, we extract the current (logged-in) user.
+passport.deserializeUser(function (user, callback) {
+  return callback(null, user); // this will be available in req.user
+});
+
+/** Creating the session */
+const session = require('express-session');
+
+app.use(session({
+  secret: "the session key it's a secret!!",
+  resave: false,
+  saveUninitialized: false
+}));
 app.use(passport.authenticate('session'));
 
+
 /** Defining authentication verification middleware **/
-const isLogged = (req, res, next) => {
-  if (req.isAuthenticated()) {
-      return next();
-  } else {
-      res.status(500).send("NOT AUTHENTICATED - GO AWAY");
+const isLoggedIn = (req, res, next) => {
+  if(req.isAuthenticated()) {
+    return next();
   }
+  return res.status(401).json({error: 'Not authorized'});
 }
+
 
 /*** Utility Functions ***/
 
 
 /*** Users APIs ***/
-app.post('/api/login', passport.authenticate('local'), (req, res) => {
-  const {hash: hashtmp, salt: salttmp, ...user} = req.user;
-  res.json(user);
+// This route is used for performing login.
+app.post('/api/sessions', function(req, res, next) {
+  passport.authenticate('local', (err, user, info) => { 
+    if (err)
+      return next(err);
+      if (!user) {
+        // display wrong login messages
+        return res.status(401).json({ error: info});
+      }
+      // success, perform the login and extablish a login session
+      req.login(user, (err) => {
+        if (err)
+          return next(err);
+        
+        // req.user contains the authenticated user, we send all the user info back
+        // this is coming from userDao.getUser() in LocalStratecy Verify Fn
+        return res.json(req.user);
+      });
+  })(req, res, next);
 });
 
-// POST /api/logout
-app.post('/api/logout', (req, res) => {
-  req.logout(()=>{res.end()});
-})
+// GET /api/sessions/current
+// This route checks whether the user is logged in or not.
+app.get('/api/sessions/current', (req, res) => {
+  if(req.isAuthenticated()) {
+    res.status(200).json(req.user);}
+  else
+    res.status(401).json({error: 'Not authenticated'});
+});
+
+// DELETE /api/session/current
+// This route is used for logout the current user.
+app.delete('/api/sessions/current', (req, res) => {
+  req.logout(() => {
+    res.status(200).json({});
+  });
+});
+
 
 /*** APIs ***/
 // GET all page web
@@ -114,6 +147,13 @@ app.get("/api/blogname", (req, res) => {
     .catch((error) => res.status(500).send(error));
 });
 
+
+app.use(isLoggedIn);
+
+// POST /api/logout
+app.post('/api/logout', (req, res) => {
+  req.logout(()=>{res.end()});
+})
 
 // DELETE page and its contents based on pageId
 app.delete("/api/pages/:pageId", (req, res) => {

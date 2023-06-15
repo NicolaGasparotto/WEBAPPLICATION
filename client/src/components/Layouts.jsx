@@ -10,11 +10,11 @@ import { Blog } from "./WebPages";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "./UserContext";
 
-function DefaultLayout() {
+function DefaultLayout(props) {
   return (
     <>
       <header>
-        <NavigationBar />
+        <NavigationBar handleLogout={props.handleLogout}/>
       </header>
       <main>
         <Container fluid>
@@ -80,11 +80,9 @@ function MainLayout(props) {
   );
 }
 
-function NavigationBar() {
+function NavigationBar(props) {
 
   const user = useContext(UserContext);
-
-  const navigate = useNavigate();
 
   const [editing, setEditing] = useState(false);
   const [blogName, setBlogName] = useState(" ");
@@ -173,9 +171,7 @@ function NavigationBar() {
             >
               <span
                 style={{
-                  color: "black",
-                  marginRight: "1rem",
-                  marginTop: "0.1rem",
+                  color: "black",            
                   fontWeight: "450",
                 }}
               >
@@ -185,11 +181,12 @@ function NavigationBar() {
                   ? `${user.name}`
                   : "Login"}
               </span>
-              <i className="bi bi-person-circle icon-size" />
+              {!user.id && <i style={{marginLeft: "0.5rem"}} className="bi bi-person-circle icon-size" />}
             </Link>
             {user.id ? (
-              <Button className="logoutButton" onClick={() => { navigate('/')}}>
+              <Button className="logoutButton" onClick={() => {props.handleLogout()}}>
                 <i className="bi bi-box-arrow-right"></i>
+                {" "}LOGOUT 
               </Button>
             ) : null}
           </div>
