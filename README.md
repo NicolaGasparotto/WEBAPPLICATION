@@ -5,9 +5,12 @@
 
 # Server side
 
+  - The `images` present in the server are stored in the folder `./public/images/` and the client side can request them one by one,
+    with a GET to `/static/images/imagename.png` and the server will send them back to the client.
+
 ## API Server
 
-- POST `/api/login`
+- POST `/api/sessions`
   - request parameters and request body content
   - response body content
 
@@ -24,15 +27,38 @@
   - response body content: a list of all the pages in the database
 - PUT `/api/pages/:pageId`
   - request body content: the page just created 
+- DELETE `/api/pages/:pageId`
+
+- GET `/api/contents/:contentId`
+
+- GET `/api/images`
 
 
+- GET `/api/blogname`
+  - request parameters: none
+  - response body content: the name of the blog
+
+- PUT `/api/blogname`
+  - request body content: the name of the blog
+
+- POST `/api/sessions`
+  - request parameters: none
+  - response body content: in case of a successful login, the user object
+
+- GET `/api/sessions/:current`
+  - request parameters: none
+  - response body content: if the user is logged in, the user object
+
+- DELETE `/api/sessions/:current`
+  - request parameters: none
+  - response body content: if the user is correctly logged out, a true value
 
 ## Database Tables
 
-- Table `users` - contains all the user Information: `userId, name (must be an Unique value not already present in the table), username, password, salt, admin`
+- Table `users` - contains all the user Information: `userId, username, hash, salt, name, backOfficeView, admin`
 - Table `pages` - contains all the infromation about the page: `idPage, title, author, creationDate, publicationDate`
 - Table `contens` - contains all the content of the page: `idContent, idPage, type, content ( text or imageNamePath )`
-
+- Table `blogname` - is Junk table that contains the name of the blog: `idBlog, name`
 
 # Client side
 
@@ -50,13 +76,16 @@
 
 - Route `/login`: page with a form to login
 - Route `/*`: everything else that is not one of the previous valid routes will be redirected to a page not found page
+
 ## Main React Components
 
-- `ListOfSomething` (in `List.js`): component purpose and main functionality
-- `GreatButton` (in `GreatButton.js`): component purpose and main functionality
-- ...
+- `WebPageForm` (in `WebPageForm.jsx`): component containing all the form needed to create a new page or edit an existing one.
+- `Blog` (in `WebPages.jsx`): compontent that contains a table with all the pages stored and it is used as element of the Main Page layout.
+- `WebPage` (in `WebPage.jsx`): compontent that contains all the element of a specific pages ( Title, Author, publicationDate, creationDate, the list of all the contents presents in the page), and buttons to go back to the main page, to edit the page or to delete it.
+- `Login` ( in `Login.jsx`): component that contains the form to do the login and in case of successful login the page will be render back to the main page.
+- `NavigationBar` ( in `Layouts.jsx`): component that contains the navbar with the name of the blog and the buttons to login or to logout the user.
+- `PageNotFound` ( in `PageNotFound.jsx`): component that will be render in case of a wrong route.
 
-(only _main_ components, minor ones may be skipped)
 
 # Usage info
 
@@ -66,5 +95,7 @@
 
 ## Users Credentials
 
-- username, password (plus any other requested info)
-- username, password (plus any other requested info)
+- janesmith@polito.it, pwdjane (`normal` user)
+- johndoe@polito.it, pwdjohn (`normal` user)
+- mikejohnson@polito.it, pwdmike (`admin` user)
+
