@@ -9,10 +9,12 @@ import { pageList, deletePage, getBlogName } from "../API";
 import dayjs from "dayjs";
 import "./style.css";
 
-function Blog() {
+function Blog(props) {
   const user = useContext(UserContext);
 
   const [webPages, setWebPages] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     pageList().then((list) => {
@@ -37,12 +39,47 @@ function Blog() {
 
   return (
     <>
-      <Container className="justify-content-center col-10 col-xxl-6 col-xl-7">
+      <Container className="d-grid justify-content-center col-10 col-xxl-6 col-xl-7">
         <header style={{marginBottom: "3rem", marginTop: "2rem"}}>
           <h1 style={{fontStyle: "italic"}}>Welcome to the Home Page</h1>
         </header>
+        {user.id ? (
+          <div className="optionsButtons">
+            <Button
+              className="backOfficeButton mb-3"
+              onClick={() => {
+                navigate("/"),
+                  user.backOfficeView
+                    ? props.setUser({ ...user, backOfficeView: false })
+                    : props.setUser({ ...user, backOfficeView: true });
+              }}
+            >
+              {" "}
+              {user.backOfficeView
+                ? "FrontOffice View"
+                : "BackOffice View"}{" "}
+            </Button>
+            {user.backOfficeView ? (
+              <Button
+                className="newPageButton"
+                onClick={() => {
+                  navigate("/newPage");
+                }}
+              >
+                <i className="bi bi-plus-lg"></i>
+                {" "}
+                new Page
+              </Button>
+            ) : (
+              <></>
+            )}
+          </div>
+        ) : (
+          <></>
+        )}
+
         <span style={{fontSize: "1rem"}}> Order by:</span>
-        <Container className="tHeader mt-1">
+        <Container className="tHeader mt-1 mb-4">
           <span> Title </span>
           <span> Author </span>
           <span> PublicationDate </span>

@@ -267,9 +267,9 @@ function WebPageForm(props) {
               value={publicationDate ?? ""}
               onChange={(event) => {
                 const selectedDate = event.target.value;
-                if (selectedDate && dayjs(selectedDate).isAfter(creationDate))
+                if (selectedDate && (dayjs(selectedDate).isSame(creationDate) || dayjs(selectedDate).isAfter(creationDate)))
                   setPublicationDate(selectedDate);
-                else setPublicationDate(undefined);
+                else setPublicationDate("");
               }}
               min={dayjs(creationDate).format("YYYY-MM-DD")}
             />

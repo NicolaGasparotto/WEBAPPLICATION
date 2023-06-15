@@ -35,47 +35,10 @@ function DefaultLayout(props) {
  * @returns view of a list of webpages (element Blog)
  */
 function MainLayout(props) {
-  const navigate = useNavigate();
-  const user = useContext(UserContext);
 
   return (
     <>
-      <Blog />
-      <footer className="footerWebPage">
-        {user.id ? (
-          <>
-            {user.backOfficeView ? (
-              <Button
-                className="newPageButton"
-                onClick={() => {
-                  navigate("/newPage");
-                }}
-              >
-                {" "}
-                Create New Page{" "}
-              </Button>
-            ) : (
-              <></>
-            )}
-            <Button
-              className="backOfficeButton"
-              onClick={() => {
-                navigate("/"),
-                  user.backOfficeView
-                    ? props.setUser({ ...user, backOfficeView: false })
-                    : props.setUser({ ...user, backOfficeView: true });
-              }}
-            >
-              {" "}
-              {user.backOfficeView
-                ? "FrontOffice View"
-                : "BackOffice View"}{" "}
-            </Button>
-          </>
-        ) : (
-          <></>
-        )}
-      </footer>
+      <Blog setUser={props.setUser}/>
     </>
   );
 }
