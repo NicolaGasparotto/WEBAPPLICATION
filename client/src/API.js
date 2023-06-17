@@ -180,7 +180,6 @@ async function getUserInfo() {
   try {
     const response = await fetch(APIURL + "/sessions/current", { method: "GET", credentials: "include" });
     if (response.ok) {
-      console.log("getUserInfo: response.ok");
       const user = await response.json();
       return user;
     } else {

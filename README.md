@@ -91,7 +91,16 @@
 
 ## Example Screenshot
 
-![Screenshot](./img/screenshot.jpg)
+![Screenshot](./img/screenshot-1.png)
+![Screenshot](./img/screenshot-2.png)
+![Screenshot](./img/screenshot-3.png)
+![Screenshot](./img/screenshot-4.png)
+![Screenshot](./img/screenshot-8.png)
+
+# `Responsive View`
+
+![Screenshot](./img/screenshot-13.png)
+
 
 ## Users Credentials
 
