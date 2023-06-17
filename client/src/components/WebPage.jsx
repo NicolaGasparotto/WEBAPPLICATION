@@ -57,14 +57,14 @@ function WebPage(){
     return <>
         <div style={{marginBottom: '8rem'}}>
             <Row className="justify-content-center row gx-4 gx-lg-5 mb-5">
-            <header className="col-8 col-xl-6 col-lg-6">
+            <header className="col-11 col-sm-10 col-md-8 col-xl-6 col-lg-6">
                 <h1 className="title">{page.title}</h1>
                 <h3 className="subtitle">Published by <b>{page.author}</b> on {pubDate()} </h3>
                 <h4 className="subtitle2">Created on {page.creationDate.format('DD-MM-YYYY')} </h4>
             </header>
             </Row>
             <Row className="justify-content-center row gx-4 gx-lg-5">
-            <article className="col-8 col-xl-6 col-lg-6">
+            <article className="col-11 col-sm-10 col-md-8 col-xl-6 col-lg-6">
                 {page.contentList.map((contentI) => {
                         if(contentI.type === 'header'){
                             return <h2 className="heading2" key={contentI.idContent}> {contentI.content}</h2>

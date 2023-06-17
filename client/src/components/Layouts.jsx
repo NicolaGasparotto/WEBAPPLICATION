@@ -66,7 +66,7 @@ function NavigationBar(props) {
   return (
     <>
       <Navbar bg="light" fixed="top" className="personalizedNavbar">
-        <Container fluid>
+        <Container fluid className="d-flex justify-content-space-between">
           <Navbar.Brand>
             {editing ? (
               <div style={{ display: "flex", flexDirection: "row" }}>
@@ -124,8 +124,7 @@ function NavigationBar(props) {
           <div
             style={{
               display: "flex",
-              flexDirection: "row",
-              transform: "scale(1.2)",
+              flexDirection: "row"
             }}
           >
             <Link
@@ -136,12 +135,13 @@ function NavigationBar(props) {
                 style={{
                   color: "black",            
                   fontWeight: "450",
+                  fontSize: "1.2rem"
                 }}
               >
                 {user.admin
-                  ? `Admin: ${user.name}`
+                  ? (<span> <b> Admin: </b>{(user.name).split(' ')[0]}</span>)
                   : user.id
-                  ? `${user.name}`
+                  ? user.name
                   : "Login"}
               </span>
               {!user.id && <i style={{marginLeft: "0.5rem"}} className="bi bi-person-circle icon-size" />}

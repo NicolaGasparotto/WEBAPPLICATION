@@ -4,13 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "./UserContext";
 
-import { pageList, deletePage, getBlogName } from "../API";
+import { pageList, deletePage } from "../API";
 
 import dayjs from "dayjs";
 import "./style.css";
 
 function Blog(props) {
-  
   const user = useContext(UserContext);
 
   const [webPages, setWebPages] = useState([]);
@@ -20,13 +19,22 @@ function Blog(props) {
   useEffect(() => {
     pageList().then((list) => {
       list.sort((a, b) => {
-        return dayjs(b.publicationDate).diff(dayjs(a.publicationDate));
+        const dateA = a.publicationDate
+          ? dayjs(a.publicationDate).format("YYYY-MM-DD")
+          : "0000-01-01";
+        const dateB = b.publicationDate
+          ? dayjs(b.publicationDate).format("YYYY-MM-DD")
+          : "0000-01-01";
+
+        // the most recent date first
+        if (dateA > dateB) return -1;
+        if (dateA < dateB) return 1;
+        return 0;
       });
 
       setWebPages(list);
     });
   }, []);
-
 
   const handleDelete = async (id) => {
     //setWaiting(true);
@@ -44,12 +52,18 @@ function Blog(props) {
 
   return (
     <>
-      <Container className="d-grid justify-content-center col-10 col-xxl-6 col-xl-7">
-        <header style={{marginBottom: "3rem", marginTop: "2rem"}}>
-          <h1 style={{fontStyle: "italic"}}>Welcome to the Home Page</h1>
+      <Container
+        fluid
+        className="d-grid justify-content-center col-11 col-sm-10 col-md-9 col-xxl-6 col-xl-7"
+      >
+        <header
+          style={{ marginBottom: "3rem", marginTop: "2rem", display: "flex" }}
+          id="headerWebPages"
+        >
+          <h1 style={{ fontStyle: "italic" }}>Welcome to the Home Page</h1>
         </header>
         {user.id ? (
-          <div className="optionsButtons">
+          <div className="optionsButtons col-10" id="headerWebPages">
             <Button
               className="backOfficeButton mb-3"
               onClick={() => {
@@ -71,9 +85,7 @@ function Blog(props) {
                   navigate("/newPage");
                 }}
               >
-                <i className="bi bi-plus-lg"></i>
-                {" "}
-                new Page
+                <i className="bi bi-plus-lg"></i> new Page
               </Button>
             ) : (
               <></>
@@ -82,14 +94,22 @@ function Blog(props) {
         ) : (
           <></>
         )}
+        {/*
+                <span style={{ fontSize: "1rem" }} id="headerWebPages"> Order by:</span>
+                <Container className="tHeader mt-1 mb-4" id="headerWebPages">
+                  <span> Title </span>
+                  <span> Author </span>
+                  <span> PublicationDate </span>
+                </Container>
+        */}
 
-        <span style={{fontSize: "1rem"}}> Order by:</span>
-        <Container className="tHeader mt-1 mb-4">
-          <span> Title </span>
-          <span> Author </span>
-          <span> PublicationDate </span>
+        <Container className="divider-container">
+          <hr className="divider-line" />
+          <div className="divider-text"> Most Recent Post </div>
+          <hr className="divider-line" />
         </Container>
-        <Table hover>
+
+        <Table hover >
           <tbody>
             {webPages.map((webPage) => {
               if (user.backOfficeView || isValid(webPage.publicationDate) > 0)
@@ -135,7 +155,7 @@ function BlogRow(props) {
     <>
       <tr className="mt-5">
         <td className="row gx-4 gx-lg-5 justify-content-center mt-3">
-          <div className="col-md-10 col-lg-8">
+          <div className="col-11 col-sm-10 col-md-9 col-lg-8">
             <div>
               <div>
                 <span className="trTitle"> {webPage.title} </span>

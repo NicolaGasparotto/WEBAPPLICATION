@@ -63,6 +63,7 @@ thead {
 }
 
 .buttonDiv {
+  display: flex;
   margin-top: 1rem;
   flex-direction: row;
   align-items: baseline;
@@ -114,10 +115,9 @@ thead {
   transition: color 0.4s;
 }
 
-.personalizedNavbar {
-  padding-left: 6%;
-  padding-right: 6%;
-  height: 65px;
+.personalizedNavbar{
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .personalizedNavbar::after {
@@ -210,6 +210,7 @@ thead {
   border-radius: 30px;
   margin-right: 0.5rem;
   margin-bottom: 0.3rem;
+  margin-left: -1.5rem;
 }
 
 .editBlogNameButton:hover {
@@ -262,6 +263,7 @@ thead {
 .newPageButton:hover {
   background-color: cornflowerblue;
   color: white;
+  border: none;
 }
 
 
@@ -407,21 +409,46 @@ thead {
   margin-top: -1rem;
 }
 
+@media screen and (max-width: 400px) {
+  #headerWebPages{
+    margin-left: 1.5rem;
+  }
+}
+
 @media (min-width: 1200px) and (max-width: 1400px) {
   .optionsButtons {
-    margin-left: -31%; /* Imposta il margin-left a -20% per schermi più grandi */
+    margin-left: -33%; /* Imposta il margin-left a -20% per schermi più grandi */
     grid-row: 1;
-    margin-bottom: -30%;
+    margin-bottom: -35%;
     flex-direction: column;
   }
 }
 
-/* Media query per schermi più grandi di 1024px */
+/* Media query per schermi più grandi di 1400px */
 @media (min-width: 1400px) {
   .optionsButtons {
-    margin-left: -44%; /* Imposta il margin-left a -20% per schermi più grandi */
+    margin-left: -45%; /* Imposta il margin-left a -20% per schermi più grandi */
     grid-row: 1;
-    margin-bottom: -30%;
+    margin-bottom: -36%;
     flex-direction: column;
   }
+}
+
+.divider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+  color: #000;
+}
+
+.divider-line {
+  flex-grow: 1;
+  border: none;
+  border-top: 1px solid #000;
+}
+
+.divider-text {
+  margin: 0 1rem;
+  font-weight: 400;
 }

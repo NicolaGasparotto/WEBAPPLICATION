@@ -208,7 +208,7 @@ function WebPageForm(props) {
 
   return (
     <>
-      <Container className="justify-content-center col-7 col-xs-11 col-lg-6 col-xxl-5 ">
+      <Container className="justify-content-center col-sm-11 col-md-8 col-lg-7 col-xl-5 col-xxl-6">
         <Modal
           show={errMsg ? true : false}
           onHide={() => {
