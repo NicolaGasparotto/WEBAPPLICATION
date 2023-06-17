@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import "./style.css";
 
 function Blog(props) {
+  
   const user = useContext(UserContext);
 
   const [webPages, setWebPages] = useState([]);
@@ -18,6 +19,10 @@ function Blog(props) {
 
   useEffect(() => {
     pageList().then((list) => {
+      list.sort((a, b) => {
+        return dayjs(b.publicationDate).diff(dayjs(a.publicationDate));
+      });
+
       setWebPages(list);
     });
   }, []);

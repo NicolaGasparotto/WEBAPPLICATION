@@ -350,7 +350,7 @@ function WebPageForm(props) {
               return (
                 <Col key={image.id} xs={6} xl={3} lg={3} className="mt-4">
                   <div className="image-wrapper">
-                    <Figure className="figureBlock">
+                    <Figure className="figureBlock" >
                       <Figure.Image
                         width={171}
                         height={180}
@@ -359,6 +359,16 @@ function WebPageForm(props) {
                           image.filename
                         }
                         alt={image.name}
+                        onClick={() => {
+                          if(selectedImages.includes(image)){
+                            setSelectedImages((prevImages) => prevImages.filter((img) => img.id !== image.id));
+                          }else{
+                            setSelectedImages((prevImages) => [
+                              ...prevImages,
+                              image,
+                            ]);
+                          }
+                        }}
                       />
                     </Figure>
                     <div className="checkBoxWrapper">
