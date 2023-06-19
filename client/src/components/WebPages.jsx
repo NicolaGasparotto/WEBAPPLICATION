@@ -1,4 +1,4 @@
-import { Table, Button, Container } from "react-bootstrap";
+import { Table, Button, Container, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 import { useContext, useState, useEffect } from "react";
@@ -14,9 +14,12 @@ function Blog(props) {
 
   const [webPages, setWebPages] = useState([]);
 
+  const [ loading, setLoading ] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
+    setLoading(true);
     pageList().then((list) => {
       list.sort((a, b) => {
         const dateA = a.publicationDate
@@ -33,6 +36,7 @@ function Blog(props) {
       });
 
       setWebPages(list);
+      setLoading(false);
     });
   }, []);
 
@@ -94,36 +98,34 @@ function Blog(props) {
         ) : (
           <></>
         )}
-        {/*
-                <span style={{ fontSize: "1rem" }} id="headerWebPages"> Order by:</span>
-                <Container className="tHeader mt-1 mb-4" id="headerWebPages">
-                  <span> Title </span>
-                  <span> Author </span>
-                  <span> PublicationDate </span>
-                </Container>
-        */}
-
         <Container className="divider-container">
           <hr className="divider-line" />
           <div className="divider-text"> Most Recent Post </div>
           <hr className="divider-line" />
         </Container>
 
-        <Table hover >
-          <tbody>
-            {webPages.map((webPage) => {
-              if (user.backOfficeView || isValid(webPage.publicationDate) > 0)
-                return (
-                  <BlogRow
-                    key={webPage.idPage}
-                    webPage={webPage}
-                    isValid={isValid(webPage.publicationDate)}
-                    handleDelete={handleDelete}
-                  />
-                );
-            })}
-          </tbody>
-        </Table>
+        {loading ? (
+          <div className="d-flex justify-content-center align-items-center">
+            <Spinner as="span" animation="border" role="status" className="me-2"/>
+            <b>Loading...</b>
+          </div>
+        ) : (
+          <Table hover >
+            <tbody>
+              {webPages.map((webPage) => {
+                if (user.backOfficeView || isValid(webPage.publicationDate) > 0)
+                  return (
+                    <BlogRow
+                      key={webPage.idPage}
+                      webPage={webPage}
+                      isValid={isValid(webPage.publicationDate)}
+                      handleDelete={handleDelete}
+                    />
+                  );
+              })}
+            </tbody>
+          </Table>
+        )}
       </Container>
     </>
   );

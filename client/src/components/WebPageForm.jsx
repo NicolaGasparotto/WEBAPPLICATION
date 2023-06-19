@@ -106,10 +106,13 @@ function WebPageForm(props) {
           publicationDate: publicationDate,
           creationDate: creationDate,
           lContents: lContent,
+        }).then(() => {
+            setErrMsg("");
+            // Navigate back to the previous page
+            goBackNavigation();
+        }).catch((err) => {
+            setErrMsg(err.message);
         });
-        setErrMsg("");
-        // Navigate back to the previous page
-        goBackNavigation();
       } else {
         setErrMsg(
           "Please, fill all the fields of the form.\nThe only empty field allowed is the publication date"
