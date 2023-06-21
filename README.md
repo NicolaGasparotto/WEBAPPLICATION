@@ -1,56 +1,56 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/_XpznRuT)
+
 # Exam #1: "CMSmall"
 
-## Student: s319834 GASPAROTTO NICOLA 
+## Student: s319834 GASPAROTTO NICOLA
 
 # Server side
 
-  - The `images` present in the server are stored in the folder `./public/images/` and the client side can request them one by one,
-    with a GET to `/static/images/imagename.png` and the server will send them back to the client.
+- The `images` present in the server are stored in the folder `./public/images/` and the client side can request them one by one,
+  with a GET to `/static/images/imagename.png` and the server will send them back to the client.
 
 ## API Server
-
-- POST `/api/sessions`
-  - request parameters and request body content
-  - response body content
-
 
 - GET `/api/pages`
   - request parameters: none
   - response body content: a list of all the pages in the database
 - POST `/api/pages`
-  - request body content: the page just created 
 
+  - request body content: all the element needed to create a new page ( wihtout the pageId )
 
 - GET `/api/pages/:pageId`
-  - request parameters: none
   - response body content: a list of all the pages in the database
 - PUT `/api/pages/:pageId`
-  - request body content: the page just created 
+  - request body content: the page
+  - response body content: true if the page is correctly updated
 - DELETE `/api/pages/:pageId`
 
 - GET `/api/contents/:contentId`
 
+  - response body content: the content of the page
+
 - GET `/api/images`
 
+  - response body content: a list of the names of all the images in the database
 
 - GET `/api/blogname`
-  - request parameters: none
+
   - response body content: the name of the blog
 
 - PUT `/api/blogname`
+
   - request body content: the name of the blog
 
 - POST `/api/sessions`
-  - request parameters: none
+
+  - request parameters: username and password
   - response body content: in case of a successful login, the user object
 
 - GET `/api/sessions/:current`
-  - request parameters: none
+
   - response body content: if the user is logged in, the user object
 
 - DELETE `/api/sessions/:current`
-  - request parameters: none
   - response body content: if the user is correctly logged out, a true value
 
 ## Database Tables
@@ -62,7 +62,6 @@
 
 # Client side
 
-
 ## React Client Application Routes
 
 - Route `/`: main page with a navbar and a list of pages and it will be displayed in frontOffice view by Default.
@@ -70,9 +69,9 @@
              logged user will have another button to switch to the Backoffice view or back to FrontOffice view.
              ( this means that there is no need to have the different pages for the two views that share already a lot of components )
 
-- Route `/pages/:pageId`: page with the content of the page and it will be displayed in frontOffice view 
+- Route `/pages/:pageId`: page with the content of the page and it will be displayed in frontOffice view
 - Route `/newPage`: page with a form to create a new page and it will be displayed in backOffice view
-- Route `/pages/:pageId/edit`: page with a form to edit a page and it will be displayed in backOffice view 
+- Route `/pages/:pageId/edit`: page with a form to edit a page and it will be displayed in backOffice view
 
 - Route `/login`: page with a form to login
 - Route `/*`: everything else that is not one of the previous valid routes will be redirected to a page not found page
@@ -86,7 +85,6 @@
 - `NavigationBar` ( in `Layouts.jsx`): component that contains the navbar with the name of the blog and the buttons to login or to logout the user.
 - `PageNotFound` ( in `PageNotFound.jsx`): component that will be render in case of a wrong route.
 
-
 # Usage info
 
 ## Example Screenshot
@@ -97,14 +95,12 @@
 ![Screenshot](./img/screenshot-4.png)
 ![Screenshot](./img/screenshot-8.png)
 
-# `Responsive View`
+## `Responsive View`
 
 ![Screenshot](./img/screenshot-13.png)
-
 
 ## Users Credentials
 
 - janesmith@polito.it, pwdjane (`normal` user)
 - johndoe@polito.it, pwdjohn (`normal` user)
 - mikejohnson@polito.it, pwdmike (`admin` user)
-
