@@ -21,6 +21,22 @@ exports.getPagesList = () => {
   });
 };
 
+exports.getPageById = (pageId) => {
+  return new Promise((resolve, reject) => {
+    db.serialize(() => {
+      db.get("SELECT * FROM pages WHERE idPage = ?", [pageId], (error, row) => {
+        if (error) {
+          reject(error);
+        } else if(row === undefined){
+          resolve(false);
+        } else {
+          resolve(row);
+        }
+      });
+    });
+  });
+}
+
 exports.getPageContents = (pageId) => {
   return new Promise((resolve, reject) => {
     const sql = "SELECT * FROM contents WHERE idPage = ?";

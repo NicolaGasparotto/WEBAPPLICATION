@@ -361,7 +361,7 @@ function WebPageForm(props) {
                           "http://localhost:3000/static/images/" +
                           image.filename
                         }
-                        alt={image.name}
+                        
                         onClick={() => {
                           if(selectedImages.includes(image)){
                             setSelectedImages((prevImages) => prevImages.filter((img) => img.id !== image.id));

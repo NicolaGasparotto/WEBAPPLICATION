@@ -109,7 +109,8 @@ app.get('/api/sessions/current', (req, res) => {
   if(req.isAuthenticated()) {
     res.status(200).json(req.user);}
   else
-    res.status(401).json({error: 'Not authenticated'});
+    res.json({error: 'Not authenticated'});
+  // removed .status(401) so in the console is not visualized  
 });
 
 // DELETE /api/session/current
@@ -128,6 +129,14 @@ app.get("/api/pages", (req, res) => {
     .getPagesList()
     .then((pages) => res.json(pages))
     .catch((error) => res.status(500).send(error));
+});
+
+// 
+app.get("/api/pages/:pageId", (req, res) => {
+  dao
+  .getPageById(req.params.pageId)
+  .then((page) => res.json(page))
+  .catch((error) => res.send(500).send(error));
 });
 
 // GET content list based on pageId

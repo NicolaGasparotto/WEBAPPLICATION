@@ -15,6 +15,24 @@ async function pageList() {
   }
 }
 
+async function getPageById(pageId) {
+  try {
+    const response = await fetch(APIURL + `/pages/${pageId}`);
+    if (response.ok) {
+      const page = await response.json();
+      if (page !== false)
+        return page;
+      console.log("error");
+      throw new Error("Page not found");
+    } else {
+      const message = await response.text();
+      throw new Error("Application error: " + message);
+    }
+  } catch (error) {
+    throw new Error("Network error: " + error.message);
+  }
+}
+
 async function deletePage(pageId) {
   try {
     const response = await fetch(APIURL + `/pages/${pageId}`, {
@@ -224,5 +242,6 @@ export {
   getAvailableImages,
   checkLogin,
   getUserInfo,
-  doLogout
+  doLogout,
+  getPageById
 };
