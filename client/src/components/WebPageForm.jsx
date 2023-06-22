@@ -45,18 +45,16 @@ function WebPageForm(props) {
   /* Setting values for the form page*/
   const [title, setTitle] = useState(webPage ? webPage.title : " ");
   const [author, setAuthor] = useState(webPage ? webPage.author : user.name);
+  
   const [publicationDate, setPublicationDate] = useState(
-    webPage && webPage.publicationDate
+    (webPage && webPage.publicationDate !== null)
       ? dayjs(webPage.publicationDate).format("YYYY-MM-DD")
-      : undefined
+      : null
   );
-
+  
   const creationDate = webPage
     ? webPage.creationDate
     : dayjs().format("YYYY-MM-DD");
-
-  const [newHeader, setNewHeader] = useState("");
-  const [newParagraph, setNewParagraph] = useState("");
 
   const [imageList, setImageList] = useState([]);
   useEffect(() => {
@@ -68,18 +66,24 @@ function WebPageForm(props) {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
 
-  function goBackNavigation() {
+  function goBackNavigation(newPage) {
     const page = location.state;
     if (page && page.nextpage) {
-      navigate(page.nextpage, {
-        state: {
-          idPage: page.idPage,
-          title: page.title,
-          author: page.author,
-          publicationDate: page.publicationDate,
-          creationDate: page.creationDate,
-        },
-      });
+      if(newPage){
+        navigate(page.nextpage, {
+          state: {...newPage}
+        });
+      }else{ 
+        navigate(page.nextpage, {
+          state: {
+            idPage: page.idPage,
+            title: title,
+            author: author,
+            publicationDate: page.publicationDate,
+            creationDate: page.creationDate,
+          },
+        });
+      }
     } else navigate("/");
   }
 
@@ -98,18 +102,21 @@ function WebPageForm(props) {
         author.trim() !== "" &&
         lContent.filter((item) => item.content.trim() === "").length === 0
       ) {
-        // Update the values in the server
-        props.submitUpdates({
+
+        const newPage = {
           idPage: webPage ? webPage.idPage : undefined,
           title: title,
           author: author,
           publicationDate: publicationDate,
           creationDate: creationDate,
           lContents: lContent,
-        }).then(() => {
+        };
+
+        // Update the values inside the server
+        props.submitUpdates(newPage).then(() => {
             setErrMsg("");
             // Navigate back to the previous page
-            goBackNavigation();
+            goBackNavigation(newPage);
         }).catch((err) => {
             setErrMsg(err.message);
         });
@@ -137,10 +144,10 @@ function WebPageForm(props) {
       idContent: newId,
       idPage: webPage ? webPage.idPage : undefined,
       type: "header",
-      content: newHeader,
+      content: "",
     };
     setLContent((prevContent) => [...prevContent, newHeaderItem]);
-    setNewHeader("");
+    
   };
 
   const handleAddParagraph = () => {
@@ -152,10 +159,10 @@ function WebPageForm(props) {
       idContent: newId,
       idPage: webPage ? webPage.idPage : undefined,
       type: "paragraph",
-      content: newParagraph,
+      content: "",
     };
     setLContent((prevContent) => [...prevContent, newParagraphItem]);
-    setNewParagraph("");
+    
   };
 
   const handleAddImage = () => {
@@ -269,12 +276,13 @@ function WebPageForm(props) {
               type="date"
               value={publicationDate ?? ""}
               onChange={(event) => {
-                const selectedDate = event.target.value;
-                if (selectedDate && (dayjs(selectedDate).isSame(creationDate) || dayjs(selectedDate).isAfter(creationDate)))
-                  setPublicationDate(selectedDate);
-                else setPublicationDate("");
+                const selectedDate = dayjs(event.target.value);
+                if (selectedDate && (selectedDate.isSame(creationDate) || selectedDate.isAfter(creationDate)))
+                  setPublicationDate(selectedDate.format("YYYY-MM-DD"));
+                else 
+                  setPublicationDate(null);
               }}
-              min={dayjs(creationDate).format("YYYY-MM-DD")}
+              min={dayjs().format("YYYY-MM-DD")}
             />
           </Form.Group>
 

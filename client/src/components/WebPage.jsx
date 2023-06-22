@@ -172,8 +172,8 @@ function WebPage() {
                         title: page.title,
                         author: page.author,
                         publicationDate:
-                          page.publicationDate.format("DD-MM-YYYY"),
-                        creationDate: page.creationDate.format("DD-MM-YYYY"),
+                          page.publicationDate ? page.publicationDate.format("YYYY-MM-DD") : page.publicationDate,
+                        creationDate: page.creationDate.format("YYYY-MM-DD"),
                       },
                     });
                   }}

@@ -141,7 +141,12 @@ CREATE TABLE users (
 */
 
 /* pwdjohn, pwdjane, pwdmike */
+/*
 INSERT INTO users (username, hash, salt, name, backOfficeView, admin) VALUES
     ('johndoe@polito.it', 'eef0cf837e95b0f4a5d410dd53a7f0ef4043480ccd03ccdfa1dfe60c03d7c04a', 'cf5dcac259d783dd', 'John Doe', 0, 0),
     ( 'janesmith@polito.it', 'ed58a7900f5260c5d345335970f41c16456a4fef6eee8f691615226a543002e9', '62e812c857f1eab0', 'Jane Smith', 0, 0),
     ( 'mikejohnson@polito.it', '48523e29854c82c8298750424caed253e5842f45d41152390581ee44940bdef1', '1633d64620394d87', 'Mike Johnson', 0, 1);
+*/
+
+INSERT INTO pages (title, author, creationDate, publicationDate) VALUES
+    ('The Graceful Giants: Exploring the World of Giraffes', 'John Doe',  '2023-01-13', null);

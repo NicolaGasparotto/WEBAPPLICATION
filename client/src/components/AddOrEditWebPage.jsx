@@ -17,6 +17,7 @@ function AddWebPage(){
 function EditWebPage(){
     
     const handleEditPage = async (page) => {
+        console.log(page);
         const { idPage: pageId, ...pageInfo } = page;
         await editPage(pageId, pageInfo);
     }
