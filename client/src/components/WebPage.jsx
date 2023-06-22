@@ -38,26 +38,28 @@ function WebPage() {
     useEffect(() => {
       setLoading(true);
       setPage(pageTmp);
-      getContents(pageTmp.idPage).then((list) => {
+      getContents(pageId).then((list) => {
         setLContent(list);
         setLoading(false);
       });
     }, [lContent.length]);
-  
   } else if (pageId) {
-    
+    /* load the page from the url */
     useEffect(() => {
       setLoading(true);
-      getPageById(pageId).then((p) => {
-        getContents(pageId).then((list) => {
-          setLContent(list);
-          const pi = new Page(...Object.values(p), list);
-          setPage(pi);
-          setLoading(false);
+      getPageById(pageId)
+        .then((p) => {
+          getContents(pageId).then((list) => {
+            setLContent(list);
+            const pi = new Page(...Object.values(p), list);
+            setPage(pi);
+            setLoading(false);
+          });
+        })
+        .catch(() => {
+          navigate("/pageNotFound");
         });
-      });
     }, [pageId]);
-    
   } else {
     return (
       <>
@@ -115,46 +117,34 @@ function WebPage() {
             </Row>
             <Row className="justify-content-center row gx-4 gx-lg-5">
               <article className="col-11 col-sm-10 col-md-8 col-xl-6 col-lg-6">
-                {loading ? (
-                  <div className="d-flex justify-content-center align-items-center">
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      role="status"
-                      className="me-2"
-                    />
-                    <b>Loading...</b>
-                  </div>
-                ) : (
-                  page.contentList.map((contentI) => {
-                    if (contentI.type === "header") {
-                      return (
-                        <h2 className="heading2" key={contentI.idContent}>
-                          {" "}
-                          {contentI.content}
-                        </h2>
-                      );
-                    } else if (contentI.type === "paragraph") {
-                      return <p key={contentI.idContent}>{contentI.content}</p>;
-                    } else if (contentI.type === "image") {
-                      return (
-                        <div
-                          key={contentI.idContent}
-                          className="row gx-3 mb-5 mt-5"
-                        >
-                          <Image
-                            src={
-                              "http://localhost:3000/static/images/" +
-                              contentI.content
-                            }
-                            alt="Image"
-                            fluid
-                          />
-                        </div>
-                      );
-                    }
-                  })
-                )}
+                {page.contentList.map((contentI) => {
+                  if (contentI.type === "header") {
+                    return (
+                      <h2 className="heading2" key={contentI.idContent}>
+                        {" "}
+                        {contentI.content}
+                      </h2>
+                    );
+                  } else if (contentI.type === "paragraph") {
+                    return <p key={contentI.idContent}>{contentI.content}</p>;
+                  } else if (contentI.type === "image") {
+                    return (
+                      <div
+                        key={contentI.idContent}
+                        className="row gx-3 mb-5 mt-5"
+                      >
+                        <Image
+                          src={
+                            "http://localhost:3000/static/images/" +
+                            contentI.content
+                          }
+                          alt="Image"
+                          fluid
+                        />
+                      </div>
+                    );
+                  }
+                })}
               </article>
             </Row>
           </div>

@@ -22,7 +22,6 @@ async function getPageById(pageId) {
       const page = await response.json();
       if (page !== false)
         return page;
-      console.log("error");
       throw new Error("Page not found");
     } else {
       const message = await response.text();
