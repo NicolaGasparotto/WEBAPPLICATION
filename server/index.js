@@ -208,6 +208,13 @@ app.get("/api/images", (req, res) => {
   });
 });
 
+// checking validity of the author name
+app.post("/api/checkauthor", (req, res) => {
+  dao
+    .checkAuthor(req.body.author)
+    .then((value) => res.json(value))
+    .catch((error) => res.status(500).send(error));
+});
 
 // PUT blogname
 app.put("/api/blogname", (req, res) => {

@@ -133,6 +133,22 @@ exports.updatePageContents = (pageId, page, lContents) => {
   });
 };
 
+exports.checkAuthor = (author) => {
+  return new Promise((resolve, reject) => {
+    db.serialize(() => {
+      db.get("SELECT name FROM users WHERE name = ?", [author], (error, row) => {
+        if (error) {
+          reject(error);
+        } else if(row === undefined){
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+    });
+  });
+}
+
 // GET blogname
 exports.getBlogName = () => {
   return new Promise((resolve, reject) => {

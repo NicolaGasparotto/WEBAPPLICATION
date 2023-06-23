@@ -97,3 +97,10 @@ GET http://localhost:3000/api/sessions/current
 ### DELETE login
 DELETE http://localhost:3000/api/sessions/current
 
+### POST checkauthor
+POST http://localhost:3000/api/checkauthor
+Content-Type: application/json
+
+{
+  "author": "Jane Smith"
+}

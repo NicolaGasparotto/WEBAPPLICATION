@@ -230,6 +230,30 @@ async function doLogout() {
   }
 }
 
+async function checkAuthor(author){
+  try {
+    const response = await fetch(APIURL + "/checkauthor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ author: author }),
+      credentials: "include"
+    });
+    if (response.ok) {
+      const author = await response.json();
+      if (author)
+        return true;
+      throw new Error("Name not valid");
+    } else {
+      const message = await response.text();
+      throw new Error("Application error: " + message);
+    } 
+  }catch (error) {
+    throw new Error(error.message, { cause: error });
+  }
+}
+
 export {
   pageList,
   deletePage,
@@ -242,5 +266,6 @@ export {
   checkLogin,
   getUserInfo,
   doLogout,
-  getPageById
+  getPageById,
+  checkAuthor
 };

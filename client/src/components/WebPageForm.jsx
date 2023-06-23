@@ -17,7 +17,7 @@ import {
   FloatingLabel,
 } from "react-bootstrap";
 
-import { getContents, getAvailableImages } from "../API";
+import { getContents, getAvailableImages, checkAuthor } from "../API";
 
 function WebPageForm(props) {
   const user = useContext(UserContext);
@@ -45,13 +45,13 @@ function WebPageForm(props) {
   /* Setting values for the form page*/
   const [title, setTitle] = useState(webPage ? webPage.title : " ");
   const [author, setAuthor] = useState(webPage ? webPage.author : user.name);
-  
+
   const [publicationDate, setPublicationDate] = useState(
-    (webPage && webPage.publicationDate !== null)
+    webPage && webPage.publicationDate !== null
       ? dayjs(webPage.publicationDate).format("YYYY-MM-DD")
       : null
   );
-  
+
   const creationDate = webPage
     ? webPage.creationDate
     : dayjs().format("YYYY-MM-DD");
@@ -69,11 +69,11 @@ function WebPageForm(props) {
   function goBackNavigation(newPage) {
     const page = location.state;
     if (page && page.nextpage) {
-      if(newPage){
+      if (newPage) {
         navigate(page.nextpage, {
-          state: {...newPage}
+          state: { ...newPage },
         });
-      }else{ 
+      } else {
         navigate(page.nextpage, {
           state: {
             idPage: page.idPage,
@@ -102,7 +102,6 @@ function WebPageForm(props) {
         author.trim() !== "" &&
         lContent.filter((item) => item.content.trim() === "").length === 0
       ) {
-
         const newPage = {
           idPage: webPage ? webPage.idPage : undefined,
           title: title,
@@ -113,13 +112,20 @@ function WebPageForm(props) {
         };
 
         // Update the values inside the server
-        props.submitUpdates(newPage).then(() => {
-            setErrMsg("");
-            // Navigate back to the previous page
-            goBackNavigation(newPage);
-        }).catch((err) => {
-            setErrMsg(err.message);
-        });
+        // before committing the changes is mandatory to check the correctness of the author name
+        if (author === user.name || (webPage && author === webPage.author)) {
+          submit(newPage);
+        } else {
+          checkAuthor(author)
+            .then(() => {
+              submit(newPage);
+            })
+            .catch(() => {
+              setErrMsg(
+                "Please, insert a valid author name. The correct format is: Name Surname with only one blankspace between them."
+              );
+            });
+        }
       } else {
         setErrMsg(
           "Please, fill all the fields of the form.\nThe only empty field allowed is the publication date"
@@ -128,6 +134,19 @@ function WebPageForm(props) {
     } else {
       setErrMsg("Please, add at least one header and one image or paragraph");
     }
+  };
+
+  const submit = (pageInfo) => {
+    props
+      .submitUpdates(pageInfo)
+      .then(() => {
+        setErrMsg("");
+        // Navigate back to the previous page
+        goBackNavigation(pageInfo);
+      })
+      .catch((err) => {
+        setErrMsg(err.message);
+      });
   };
 
   const handleDelete = (id) => {
@@ -147,7 +166,6 @@ function WebPageForm(props) {
       content: "",
     };
     setLContent((prevContent) => [...prevContent, newHeaderItem]);
-    
   };
 
   const handleAddParagraph = () => {
@@ -162,7 +180,6 @@ function WebPageForm(props) {
       content: "",
     };
     setLContent((prevContent) => [...prevContent, newParagraphItem]);
-    
   };
 
   const handleAddImage = () => {
@@ -277,10 +294,13 @@ function WebPageForm(props) {
               value={publicationDate ?? ""}
               onChange={(event) => {
                 const selectedDate = dayjs(event.target.value);
-                if (selectedDate && (selectedDate.isSame(creationDate) || selectedDate.isAfter(creationDate)))
+                if (
+                  selectedDate &&
+                  (selectedDate.isSame(creationDate) ||
+                    selectedDate.isAfter(creationDate))
+                )
                   setPublicationDate(selectedDate.format("YYYY-MM-DD"));
-                else 
-                  setPublicationDate(null);
+                else setPublicationDate(null);
               }}
               min={dayjs().format("YYYY-MM-DD")}
             />
@@ -303,22 +323,22 @@ function WebPageForm(props) {
                   >
                     <i className="bi bi-trash"></i>
                   </Button>
-                  { lContent.length > 1 &&
-                  <div style={{ display: "flex", flexDirection: "column" }}>
-                    <Button
-                      className="upDownButtons"
-                      onClick={() => handleMove(item.idContent, "up")}
-                    >
-                      <i className="bi bi-caret-up-fill" />
-                    </Button>
-                    <Button
-                      className="upDownButtons"
-                      onClick={() => handleMove(item.idContent, "down")}
-                    >
-                      <i className="bi bi-caret-down-fill" />
-                    </Button>
-                  </div>
-                  }
+                  {lContent.length > 1 && (
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <Button
+                        className="upDownButtons"
+                        onClick={() => handleMove(item.idContent, "up")}
+                      >
+                        <i className="bi bi-caret-up-fill" />
+                      </Button>
+                      <Button
+                        className="upDownButtons"
+                        onClick={() => handleMove(item.idContent, "down")}
+                      >
+                        <i className="bi bi-caret-down-fill" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </Form.Group>
             );
@@ -361,7 +381,7 @@ function WebPageForm(props) {
               return (
                 <Col key={image.id} xs={6} xl={3} lg={3} className="mt-4">
                   <div className="image-wrapper">
-                    <Figure className="figureBlock" >
+                    <Figure className="figureBlock">
                       <Figure.Image
                         width={171}
                         height={180}
@@ -369,11 +389,12 @@ function WebPageForm(props) {
                           "http://localhost:3000/static/images/" +
                           image.filename
                         }
-                        
                         onClick={() => {
-                          if(selectedImages.includes(image)){
-                            setSelectedImages((prevImages) => prevImages.filter((img) => img.id !== image.id));
-                          }else{
+                          if (selectedImages.includes(image)) {
+                            setSelectedImages((prevImages) =>
+                              prevImages.filter((img) => img.id !== image.id)
+                            );
+                          } else {
                             setSelectedImages((prevImages) => [
                               ...prevImages,
                               image,
@@ -474,7 +495,7 @@ function ContentForm(props) {
         style={{ fontWeight: "500" }}
         className="flex-grow-1 me-3"
       >
-        <Form.Control  
+        <Form.Control
           as="textarea"
           style={{ height: "250px", paddingTop: "35px" }}
           className={item.type === "header" ? "heading2" : ""}
