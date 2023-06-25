@@ -14,40 +14,43 @@
 - GET `/api/pages`
   - request parameters: none
   - response body content: a list of all the pages in the database
-- POST `/api/pages`
 
+- POST `/api/pages`
   - request body content: all the element needed to create a new page ( wihtout the pageId )
 
 - GET `/api/pages/:pageId`
+  - request parameters content: the page id
   - response body content: a list of all the pages in the database
+
 - PUT `/api/pages/:pageId`
   - request body content: the page
   - response body content: true if the page is correctly updated
+
 - DELETE `/api/pages/:pageId`
+ - request body content: the page id
 
 - GET `/api/contents/:contentId`
-
+  - request parameters content: the content id
   - response body content: the content of the page
 
+- POST `/api/checkauthor`
+ - request body content: the name of the author passed from the client
+ - response body content: true if the author is present in the database
+ 
 - GET `/api/images`
-
   - response body content: a list of the names of all the images in the database
 
 - GET `/api/blogname`
-
   - response body content: the name of the blog
 
 - PUT `/api/blogname`
-
   - request body content: the name of the blog
 
 - POST `/api/sessions`
-
   - request parameters: username and password
   - response body content: in case of a successful login, the user object
 
 - GET `/api/sessions/:current`
-
   - response body content: if the user is logged in, the user object
 
 - DELETE `/api/sessions/:current`
@@ -89,18 +92,12 @@
 
 ## Example Screenshot
 
-![Screenshot](./img/screenshot-1.png)
-![Screenshot](./img/screenshot-2.png)
-![Screenshot](./img/screenshot-3.png)
-![Screenshot](./img/screenshot-4.png)
-![Screenshot](./img/screenshot-8.png)
-
-## `Responsive View`
-
-![Screenshot](./img/screenshot-13.png)
+![Screenshot](./img/screenshot1.png)
+![Screenshot](./img/screenshot2.png)
 
 ## Users Credentials
 
 - janesmith@polito.it, pwdjane (`normal` user)
 - johndoe@polito.it, pwdjohn (`normal` user)
+- marcorossi@polito.it, pwdmarco (`normal` user)
 - mikejohnson@polito.it, pwdmike (`admin` user)

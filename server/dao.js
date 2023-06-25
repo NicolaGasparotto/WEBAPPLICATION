@@ -87,10 +87,10 @@ exports.addNewPage = (page, lContents) => {
           } else {
             const idPage = this.lastID; 
             const stmt = db.prepare(
-              "INSERT INTO contents (idContent, idPage, type, content) VALUES (?, ?, ?, ?)"
+              "INSERT INTO contents (idPage, type, content) VALUES (?, ?, ?)"
             );
             lContents.forEach((content) => {
-              stmt.run(content.idContent, idPage, content.type, content.content);
+              stmt.run(idPage, content.type, content.content);
             });
             stmt.finalize();
             resolve(idPage, this.changes);
@@ -111,10 +111,10 @@ exports.updatePageContents = (pageId, page, lContents) => {
           return;
         }
         const stmt = db.prepare(
-          "INSERT INTO contents (idContent, idPage, type, content) VALUES (?, ?, ?, ?)"
+          "INSERT INTO contents (idPage, type, content) VALUES (?, ?, ?)"
         );
         lContents.forEach((content) => {
-          stmt.run(content.idContent, pageId, content.type, content.content);
+          stmt.run( pageId, content.type, content.content);
         });
         stmt.finalize();
         db.run(

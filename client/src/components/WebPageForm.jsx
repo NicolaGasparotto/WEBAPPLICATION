@@ -1,23 +1,15 @@
 import dayjs from "dayjs";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Form, Button, Container, FormLabel } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { UserContext } from "./UserContext";
-import { useContext } from "react";
 
-import {
-  Modal,
-  Row,
-  Col,
-  Image,
-  Figure,
-  Alert,
-  FloatingLabel,
-} from "react-bootstrap";
+import { Modal, Image, FloatingLabel } from "react-bootstrap";
 
-import { getContents, getAvailableImages, checkAuthor } from "../API";
+import { getContents, checkAuthor } from "../API";
+import { ImagesModal } from "./ImagesModal";
 
 function WebPageForm(props) {
   const user = useContext(UserContext);
@@ -38,36 +30,26 @@ function WebPageForm(props) {
       });
     }
   }, []);
-
-  const [showImageError, setShowImageError] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
-
+  
   /* Setting values for the form page*/
   const [title, setTitle] = useState(webPage ? webPage.title : " ");
   const [author, setAuthor] = useState(webPage ? webPage.author : user.name);
-
   const [publicationDate, setPublicationDate] = useState(
     webPage && webPage.publicationDate !== null
       ? dayjs(webPage.publicationDate).format("YYYY-MM-DD")
       : null
   );
-
   const creationDate = webPage
     ? webPage.creationDate
     : dayjs().format("YYYY-MM-DD");
 
-  const [imageList, setImageList] = useState([]);
-  useEffect(() => {
-    getAvailableImages().then((list) => {
-      setImageList(list);
-    });
-  }, []);
-
+  const [errMsg, setErrMsg] = useState("");
   const [showImageModal, setShowImageModal] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [ waiting, setWaiting ] = useState(false);
 
   function goBackNavigation(newPage) {
     const page = location.state;
+    setWaiting(false);
     if (page && page.nextpage) {
       if (newPage) {
         navigate(page.nextpage, {
@@ -90,6 +72,7 @@ function WebPageForm(props) {
   /* The action is different if is an AddNewPage or EditPage*/
   const handleSubmit = (event) => {
     event.preventDefault();
+    setWaiting(true);
 
     const hasHeader = lContent.some((item) => item.type === "header");
     const hasImageOrParagraph = lContent.some(
@@ -124,15 +107,18 @@ function WebPageForm(props) {
               setErrMsg(
                 "Please, insert a valid author name. The correct format is: Name Surname with only one blankspace between them."
               );
+              setWaiting(false);
             });
         }
       } else {
         setErrMsg(
           "Please, fill all the fields of the form.\nThe only empty field allowed is the publication date"
         );
+        setWaiting(false);
       }
     } else {
       setErrMsg("Please, add at least one header and one image or paragraph");
+      setWaiting(false);
     }
   };
 
@@ -180,37 +166,6 @@ function WebPageForm(props) {
       content: "",
     };
     setLContent((prevContent) => [...prevContent, newParagraphItem]);
-  };
-
-  const handleAddImage = () => {
-    if (selectedImages.length === 0) {
-      setShowImageError(true);
-      return;
-    }
-
-    let newId = lContent.length
-      ? Math.max(...lContent.map((item) => item.idContent))
-      : 0;
-    for (const selectedImage of selectedImages) {
-      newId += 1;
-      const newImageItem = {
-        idContent: newId,
-        idPage: webPage ? webPage.idPage : undefined,
-        type: "image",
-        content: selectedImage.filename,
-      };
-      setLContent((prevContent) => [...prevContent, newImageItem]);
-
-      setShowImageError(false);
-      setShowImageModal(false);
-      setSelectedImages([]);
-    }
-  };
-
-  const handleModalClose = () => {
-    setShowImageModal(false);
-    setShowImageError(false);
-    setSelectedImages([]);
   };
 
   const handleMove = (itemId, direction) => {
@@ -268,7 +223,7 @@ function WebPageForm(props) {
           </FloatingLabel>
 
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="author">Published by </Form.Label>{" "}
+            <Form.Label>Published by </Form.Label>{" "}
             {user.admin ? (
               <Form.Control
                 className="subtitle"
@@ -285,14 +240,14 @@ function WebPageForm(props) {
               </FormLabel>
             )}
           </Form.Group>
-
-          <Form.Group className="mb-5">
-            <Form.Label>Publication date</Form.Label>
-            {/* publicationDate is an optional parameter. It have to be properly rendered only if available. */}
-            <Form.Control
-              type="date"
-              value={publicationDate ?? ""}
-              onChange={(event) => {
+          
+          <Form.Group controlId="webpageDate" className="mb-5">
+            <Form.Label className='fw-light'>Publication date</Form.Label>
+            <Form.Control value={publicationDate || ""} type="date" name="date"  placeholder="Enter date" 
+              
+              min={dayjs().format("YYYY-MM-DD")}
+              onKeyDown={(event) => {event.preventDefault()}}
+              onChange={(event)=>{
                 const selectedDate = dayjs(event.target.value);
                 if (
                   selectedDate &&
@@ -301,11 +256,10 @@ function WebPageForm(props) {
                 )
                   setPublicationDate(selectedDate.format("YYYY-MM-DD"));
                 else setPublicationDate(null);
-              }}
-              min={dayjs().format("YYYY-MM-DD")}
-            />
+                }} />
           </Form.Group>
 
+          {/** CONTENTS FORMS */}
           {lContent.map((item) => {
             return (
               <Form.Group key={item.idContent} className="mb-4">
@@ -316,7 +270,6 @@ function WebPageForm(props) {
                     lContent={lContent}
                     setLContent={setLContent}
                   />
-
                   <Button
                     className="footerDelete me-2"
                     onClick={() => handleDelete(item.idContent)}
@@ -343,8 +296,11 @@ function WebPageForm(props) {
               </Form.Group>
             );
           })}
+
         </Form>
       </Container>
+      
+      {/** NEW ELEMENTS BUTTONS */}
       <div className="addElementsDiv">
         <Button
           className="addElementsButton"
@@ -369,84 +325,15 @@ function WebPageForm(props) {
           <i className="bi bi-plus-lg"></i> Image
         </Button>
       </div>
+      
+      {/** POPUP WINDOWS TO CHOOSE IMAGES */}
+      <ImagesModal lContent={lContent} setLContent={setLContent} 
+                   showImageModal={showImageModal} setShowImageModal={setShowImageModal} idPage={webPage ? webPage.idPage : undefined}/>
 
-      <Modal size="lg" show={showImageModal} onHide={() => handleModalClose()}>
-        <Modal.Header closeButton>
-          <Modal.Title>Select Image:</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ paddingLeft: "40px", paddingRight: "20px" }}>
-          <Row className="gx-5">
-            {/* Loop per visualizzare le immagini */}
-            {imageList.map((image) => {
-              return (
-                <Col key={image.id} xs={6} xl={3} lg={3} className="mt-4">
-                  <div className="image-wrapper">
-                    <Figure className="figureBlock">
-                      <Figure.Image
-                        width={171}
-                        height={180}
-                        src={
-                          "http://localhost:3000/static/images/" +
-                          image.filename
-                        }
-                        onClick={() => {
-                          if (selectedImages.includes(image)) {
-                            setSelectedImages((prevImages) =>
-                              prevImages.filter((img) => img.id !== image.id)
-                            );
-                          } else {
-                            setSelectedImages((prevImages) => [
-                              ...prevImages,
-                              image,
-                            ]);
-                          }
-                        }}
-                      />
-                    </Figure>
-                    <div className="checkBoxWrapper">
-                      <Form.Check
-                        type="checkbox"
-                        checked={selectedImages.includes(image)}
-                        label={image.name}
-                        onChange={(event) => {
-                          const isChecked = event.target.checked;
-                          if (isChecked) {
-                            setSelectedImages((prevImages) => [
-                              ...prevImages,
-                              image,
-                            ]);
-                          } else {
-                            // is already checked --> remove it
-                            setSelectedImages((prevImages) =>
-                              prevImages.filter((img) => img.id !== image.id)
-                            );
-                          }
-                        }}
-                      />{" "}
-                    </div>
-                  </div>
-                </Col>
-              );
-            })}
-          </Row>
-        </Modal.Body>
-        <Modal.Footer>
-          {showImageError && (
-            <Alert variant="danger" style={{ marginRight: "5%" }}>
-              Please select an image.
-            </Alert>
-          )}
-          <Button variant="secondary" onClick={() => handleModalClose()}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={() => handleAddImage()}>
-            Add
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
+      {/** SAVE AND CANCEL BUTTONS */}
       <footer className="footerWebPage">
         <Button
+          disabled={waiting}
           className="newPageButton"
           style={{ width: "150px" }}
           onClick={(event) => handleSubmit(event)}
@@ -455,6 +342,7 @@ function WebPageForm(props) {
           Save
         </Button>
         <Button
+          disabled={waiting}
           className="deleteButton"
           style={{ border: "2px solid red" }}
           onClick={() => {
@@ -468,6 +356,7 @@ function WebPageForm(props) {
   );
 }
 
+/** Function to visualize the image or the text form for the corresponding content type*/
 function ContentForm(props) {
   const item = props.item;
 

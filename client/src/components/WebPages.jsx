@@ -15,6 +15,7 @@ function Blog(props) {
   const [webPages, setWebPages] = useState([]);
 
   const [ loading, setLoading ] = useState(true);
+  const [ waiting, setWaiting ] = useState(false);
 
   const navigate = useNavigate();
 
@@ -38,14 +39,14 @@ function Blog(props) {
       setWebPages(list);
       setLoading(false);
     });
-  }, []);
+  }, [webPages.length]);
 
   const handleDelete = async (id) => {
-    //setWaiting(true);
+    setWaiting(true);
     await deletePage(id);
     const list = await pageList();
     setWebPages(list);
-    // setWaiting(false);
+    setWaiting(false);
   };
 
   const isValid = (date) => {
@@ -118,6 +119,7 @@ function Blog(props) {
                     <BlogRow
                       key={webPage.idPage}
                       webPage={webPage}
+                      waiting={waiting}
                       isValid={isValid(webPage.publicationDate)}
                       handleDelete={handleDelete}
                     />
@@ -135,6 +137,7 @@ function BlogRow(props) {
   const user = useContext(UserContext);
 
   const webPage = props.webPage;
+  const waiting = props.waiting;
 
   const navigate = useNavigate();
 
@@ -169,6 +172,7 @@ function BlogRow(props) {
             </div>
             <div className="buttonDiv">
               <Button
+                disabled={waiting}
                 className="viewButton"
                 onClick={() => {
                   navigate(`/pages/${webPage.idPage}`, {
@@ -189,6 +193,7 @@ function BlogRow(props) {
               (user.name === webPage.author || user.admin) ? (
                 <>
                   <Button
+                    disabled={waiting}
                     className="editButton"
                     onClick={() =>
                       navigate(`/pages/${webPage.idPage}/edit`, {
@@ -207,6 +212,7 @@ function BlogRow(props) {
                   </Button>
                   <Button
                     className="deleteButton"
+                    disabled={waiting}
                     onClick={() => {
                       props.handleDelete(webPage.idPage);
                     }}

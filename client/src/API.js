@@ -1,3 +1,5 @@
+'use strict';
+
 const APIURL = "http://localhost:3000/api";
 
 async function pageList() {
@@ -185,7 +187,6 @@ async function checkLogin(username, password) {
       return user;
     } else {
       const message = await response.json();
-      console.log(message, "\n", message.error);
       throw new Error(message.error);
     }
   } catch (error) {
@@ -200,7 +201,6 @@ async function getUserInfo() {
       const user = await response.json();
       return user;
     } else {
-      console.log("getUserInfo: response not ok");
       const message = await response.json();
       throw new Error(message.error);
     }

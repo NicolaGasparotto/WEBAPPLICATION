@@ -46,6 +46,7 @@ function MainLayout(props) {
 function NavigationBar(props) {
 
   const user = useContext(UserContext);
+  const navigate = useNavigate();
 
   const [editing, setEditing] = useState(false);
   const [blogName, setBlogName] = useState(" ");
@@ -147,7 +148,7 @@ function NavigationBar(props) {
               {!user.id && <i style={{marginLeft: "0.5rem"}} className="bi bi-person-circle icon-size" />}
             </Link>
             {user.id ? (
-              <Button className="logoutButton" onClick={() => {props.handleLogout()}}>
+              <Button className="logoutButton" onClick={() => {props.handleLogout().then(navigate("/"))}}>
                 <i className="bi bi-box-arrow-right"></i>
                 {" "}LOGOUT 
               </Button>

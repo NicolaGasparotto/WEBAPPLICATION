@@ -20,6 +20,7 @@ function WebPage() {
 
   const [lContent, setLContent] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [waiting, setWaiting] = useState(false);
 
   const [page, setPage] = useState({});
 
@@ -69,9 +70,9 @@ function WebPage() {
   }
 
   const handleDelete = async (id) => {
-    //setWaiting(true);
+    setWaiting(true);
     await deletePage(id);
-    // setWaiting(false);
+    setWaiting(false);
     navigate("/");
   };
 
@@ -150,6 +151,7 @@ function WebPage() {
           </div>
           <footer className="footerWebPage">
             <Button
+              disabled={waiting}
               className="footerButton"
               onClick={() => {
                 navigate("/");
@@ -163,6 +165,7 @@ function WebPage() {
             (user.name === page.author || user.admin) ? (
               <>
                 <Button
+                  disabled={waiting}
                   className="footerEdit"
                   onClick={() => {
                     navigate(`/pages/${page.idPage}/edit`, {
@@ -182,6 +185,7 @@ function WebPage() {
                   EDIT Page{" "}
                 </Button>
                 <Button
+                  disabled={waiting}
                   className="footerDelete"
                   onClick={() => {
                     handleDelete(page.idPage);
