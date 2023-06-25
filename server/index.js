@@ -159,11 +159,6 @@ app.get("/api/blogname", (req, res) => {
 
 app.use(isLoggedIn);
 
-// POST /api/logout
-app.post('/api/logout', (req, res) => {
-  req.logout(()=>{res.end()});
-})
-
 // DELETE page and its contents based on pageId
 app.delete("/api/pages/:pageId", (req, res) => {
   const pageId = req.params.pageId;
