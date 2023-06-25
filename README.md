@@ -34,8 +34,8 @@
   - response body content: the content of the page
 
 - POST `/api/checkauthor`
- - request body content: the name of the author passed from the client
- - response body content: true if the author is present in the database
+  - request body content: the name of the author passed from the client
+  - response body content: true if the author is present in the database
  
 - GET `/api/images`
   - response body content: a list of the names of all the images in the database
@@ -58,10 +58,10 @@
 
 ## Database Tables
 
-- Table `users` - contains all the user Information: `userId, username, hash, salt, name, backOfficeView, admin`
+- Table `users` - contains all the user Information: `id, username, hash, salt, name, backOfficeView, admin`
 - Table `pages` - contains all the infromation about the page: `idPage, title, author, creationDate, publicationDate`
 - Table `contens` - contains all the content of the page: `idContent, idPage, type, content ( text or imageNamePath )`
-- Table `blogname` - is Junk table that contains the name of the blog: `idBlog, name`
+- Table `blogname` - is Junk table that contains the name of the blog: `id, name`
 
 # Client side
 
@@ -77,7 +77,7 @@
 - Route `/pages/:pageId/edit`: page with a form to edit a page and it will be displayed in backOffice view
 
 - Route `/login`: page with a form to login
-- Route `/*`: everything else that is not one of the previous valid routes will be redirected to a page not found page
+- Route `/*`: everything else that is not one of the previous valid routes will be redirected to a not found page
 
 ## Main React Components
 
