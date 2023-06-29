@@ -90,6 +90,10 @@
 
 # Usage info
 
+You first need to download the zip repo, then you need to have installed node and nodemon package. Then after typing "npm install" from server and client directories you can run the application with:
+ - from the server dir: nodemon index.js
+ - from the client dir: npm run dev
+
 ## Example Screenshot
 
 ![Screenshot](./img/screenshot1.png)
