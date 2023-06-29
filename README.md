@@ -29,7 +29,7 @@
 - DELETE `/api/pages/:pageId`
  - request body content: the page id
 
-- GET `/api/contents/:contentId`
+- GET `/api/contents/:pageId`
   - request parameters content: the content id
   - response body content: the content of the page
 
